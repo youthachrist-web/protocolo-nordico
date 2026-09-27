@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle2, Mail, ArrowLeft } from "lucide-react";
+import { CheckCircle2, Mail, ArrowLeft, Download, Loader2 } from "lucide-react";
 import Footer from "@/components/protocolo/Footer";
 import UpsellSection from "@/components/protocolo/UpsellSection";
 import { pixelProducts } from "@/lib/quizData";
@@ -15,6 +15,36 @@ export default function Obrigado() {
   const productKey = params.get("produto") === "ebook" ? "ebook" : "protocolo";
   const sessionId = params.get("session_id");
   const product = pixelProducts[productKey];
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState("");
+
+  // O servidor confirma o pagamento na Stripe antes de devolver o PDF
+  async function downloadPdf() {
+    setDownloading(true);
+    setDownloadError("");
+    try {
+      const res = await fetch(
+        `/api/download?produto=${productKey}&session_id=${encodeURIComponent(sessionId)}`
+      );
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Não foi possível descarregar o ficheiro.");
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = productKey === "ebook" ? "Controlo-Total.pdf" : "Protocolo-Nordico.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setDownloadError(err.message);
+    } finally {
+      setDownloading(false);
+    }
+  }
 
   useEffect(() => {
     // Evita contar a mesma compra duas vezes (refresh / voltar à página)
@@ -47,12 +77,33 @@ export default function Obrigado() {
             Obrigado pela sua confiança. O seu acesso começa agora.
           </p>
 
-          <div className="mx-auto mt-8 flex max-w-md items-start gap-3 rounded-2xl border border-pn-gold/30 bg-white/5 p-5 text-left">
+          {sessionId && (
+            <div className="mx-auto mt-8 max-w-md">
+              <button
+                type="button"
+                onClick={downloadPdf}
+                disabled={downloading}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-70"
+              >
+                {downloading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4" />
+                )}
+                Descarregar {product.name} (PDF)
+              </button>
+              {downloadError && (
+                <p className="mt-3 text-xs text-red-300">{downloadError}</p>
+              )}
+            </div>
+          )}
+
+          <div className="mx-auto mt-6 flex max-w-md items-start gap-3 rounded-2xl border border-pn-gold/30 bg-white/5 p-5 text-left">
             <Mail className="mt-0.5 h-5 w-5 shrink-0 text-pn-gold" />
             <p className="text-sm text-pn-light/75">
-              Enviámos o recibo e as instruções de acesso para o email que
-              usou no pagamento. Se não o encontrar em alguns minutos,
-              verifique a pasta de spam ou promoções.
+              Guarde o PDF no telemóvel ou no computador. O recibo do pagamento
+              foi enviado para o email que usou na compra. Em caso de dúvida,
+              responda a esse email.
             </p>
           </div>
 
