@@ -1,7 +1,7 @@
 // Meta Pixel (Facebook) — carregado só quando existe um ID configurado.
 // O ID do Pixel é público; pode vir da variável de ambiente VITE_META_PIXEL_ID
 // (Vercel → Settings → Environment Variables) ou ser colado diretamente aqui.
-export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID || "";
+export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID || "1627023772153905";
 
 let initialized = false;
 
