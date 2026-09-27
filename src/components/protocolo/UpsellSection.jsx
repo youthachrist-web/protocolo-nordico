@@ -1,6 +1,7 @@
 import React from "react";
 import { Check, ArrowRight, BookOpen, ShieldCheck } from "lucide-react";
-import { upsellProduct, STRIPE_UPSELL_URL } from "@/lib/quizData";
+import { upsellProduct, STRIPE_UPSELL_URL, pixelProducts } from "@/lib/quizData";
+import { trackEvent, productParams } from "@/lib/metaPixel";
 
 export default function UpsellSection() {
   return (
@@ -55,6 +56,9 @@ export default function UpsellSection() {
 
             <a
               href={STRIPE_UPSELL_URL}
+              onClick={() =>
+                trackEvent("InitiateCheckout", productParams(pixelProducts.ebook))
+              }
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
             >
               Quero adicionar o ebook <ArrowRight className="h-4 w-4" />

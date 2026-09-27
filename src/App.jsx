@@ -6,11 +6,13 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
+import MetaPixelTracker from './components/MetaPixelTracker';
 // Add page imports here
 import Home from '@/pages/Home';
 import Quiz from '@/pages/Quiz';
 import Resultado from '@/pages/Resultado';
 import Checkout from '@/pages/Checkout';
+import Obrigado from '@/pages/Obrigado';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -43,6 +45,7 @@ const AuthenticatedApp = () => {
       <Route path="/quiz" element={<Quiz />} />
       <Route path="/resultado" element={<Resultado />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/obrigado" element={<Obrigado />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
@@ -56,6 +59,7 @@ function App() {
       <QueryClientProvider client={queryClientInstance}>
         <Router>
           <ScrollToTop />
+          <MetaPixelTracker />
           <AuthenticatedApp />
         </Router>
         <Toaster />

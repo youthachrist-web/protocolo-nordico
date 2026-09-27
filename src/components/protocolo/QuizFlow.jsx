@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Check, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { quizQuestions, processingSteps } from "@/lib/quizData";
 import { base44 } from "@/api/base44Client";
+import { trackEvent } from "@/lib/metaPixel";
 
 const STORAGE_KEY = "pn_quiz_state";
 
@@ -91,6 +92,7 @@ export default function QuizFlow() {
       desafio: lead.desafio,
       answers
     }).catch(() => {});
+    trackEvent("Lead", { content_name: "Quiz Protocolo Nórdico" });
     setTimeout(() => {
       setSubmitting(false);
       setStep("processing");

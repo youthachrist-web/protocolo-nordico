@@ -142,6 +142,12 @@ export const fruitImages = {
 export const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/7sY4gz4RV5xH04RcvC4gg0F";
 export const PRODUCT_PRICE = "€16,49";
 
+// Valores numéricos para o Meta Pixel (eventos InitiateCheckout / Purchase)
+export const pixelProducts = {
+  protocolo: { name: "Protocolo Nórdico", value: 16.49 },
+  ebook: { name: "Controlo Total", value: 9.97 },
+};
+
 // Áreas analisadas no resultado personalizado
 export const profileAreas = [
   { key: "energia", label: "Energia", icon: "Zap" },
