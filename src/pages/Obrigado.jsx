@@ -4,7 +4,7 @@ import { CheckCircle2, Mail, ArrowLeft } from "lucide-react";
 import Footer from "@/components/protocolo/Footer";
 import UpsellSection from "@/components/protocolo/UpsellSection";
 import { pixelProducts } from "@/lib/quizData";
-import { trackEvent, productParams } from "@/lib/metaPixel";
+import { trackEvent, trackCustomEvent, productParams } from "@/lib/metaPixel";
 
 // Página de retorno do Stripe após o pagamento.
 // Configurar no Stripe (Payment Link → After payment → Redirect) para:
@@ -25,11 +25,14 @@ export default function Obrigado() {
     } catch {
       // storage indisponível — envia na mesma
     }
-    trackEvent(
-      "Purchase",
-      productParams(product),
-      sessionId ? { eventID: sessionId } : undefined
-    );
+    const options = sessionId ? { eventID: sessionId } : undefined;
+    // Só o produto principal conta como Purchase (é o evento que a campanha
+    // otimiza). O upsell vai num evento próprio para não baixar o CPA falsamente.
+    if (productKey === "ebook") {
+      trackCustomEvent("CompraUpsell", productParams(product), options);
+    } else {
+      trackEvent("Purchase", productParams(product), options);
+    }
   }, [productKey, sessionId, product]);
 
   return (
