@@ -37,6 +37,12 @@ export function trackEvent(name, params, options) {
   window.fbq("track", name, params || {}, options || {});
 }
 
+export function trackCustomEvent(name, params, options) {
+  initMetaPixel();
+  if (!initialized || typeof window.fbq !== "function") return;
+  window.fbq("trackCustom", name, params || {}, options || {});
+}
+
 export const trackPageView = () => trackEvent("PageView");
 
 // Produto → parâmetros padrão do Meta (value/currency/content_name)
