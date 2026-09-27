@@ -29,7 +29,7 @@ export default function Hero() {
 
             <p className="mt-5 max-w-md text-base leading-relaxed text-pn-light/70 md:text-lg">
               Um protocolo simples de hábitos — sono, treino de força,
-              alimentação e exposição à luz — pensado para homens a partir dos 35.
+              alimentação, luz solar e desempenho sexual — pensado para homens a partir dos 35.
               Sem promessas milagrosas. Apenas disciplina e método.
             </p>
 
@@ -41,7 +41,7 @@ export default function Hero() {
                 Começar o meu diagnóstico
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <span className="text-xs text-pn-light/40">9 perguntas · 2 minutos · gratuito</span>
+              <span className="text-xs text-pn-light/40">10 perguntas · 2 minutos · gratuito</span>
             </div>
 
             <div className="mt-8 flex items-center gap-4 text-xs text-pn-light/50">
@@ -68,7 +68,7 @@ export default function Hero() {
             {/* Cartão flutuante */}
             <div className="absolute -bottom-4 -left-2 rounded-xl border border-pn-gold/30 bg-pn-dark/90 px-4 py-3 backdrop-blur md:left-6">
               <div className="pn-label text-[10px] text-pn-gold">Resultado típico</div>
-              <div className="pn-serif text-sm text-pn-light">+ energia, + foco, + disposição</div>
+              <div className="pn-serif text-sm text-pn-light">+ energia, + vontade, + confiança</div>
             </div>
           </div>
         </div>
