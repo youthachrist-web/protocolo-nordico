@@ -5,6 +5,7 @@ import { Image } from "@/components/ui/image";
 import Hero from "@/components/protocolo/Hero";
 import BeforeAfterGallery from "@/components/protocolo/BeforeAfterGallery";
 import Footer from "@/components/protocolo/Footer";
+import SexualPerformanceSection from "@/components/protocolo/SexualPerformanceSection";
 import { lifestyleImages, fruitImages } from "@/lib/quizData";
 
 const pillars = [
@@ -31,9 +32,10 @@ export default function Home() {
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-pn-ink/60">
             O cansaço acumula. A barriga não sai. O sono deixa de restaurar.
+            A vontade diminui e, na intimidade, o corpo já não responde como antes.
             Não é falta de vontade — é a ausência de um método claro.
             O Protocolo Nórdico organiza os hábitos que mais influenciam
-            a sua energia, recuperação e disposição.
+            a sua energia, recuperação, disposição e desempenho sexual.
           </p>
           <Link
             to="/quiz"
@@ -43,6 +45,9 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* Desempenho sexual + validação */}
+      <SexualPerformanceSection />
 
       {/* Antes e depois */}
       <BeforeAfterGallery />

@@ -1,4 +1,4 @@
-// Dados oficiais do quiz do Protocolo Nórdico — 9 etapas
+// Dados oficiais do quiz do Protocolo Nórdico — 10 etapas
 // Cada pergunta apresenta versão PT e IT, com gatilho e etapa de consciência.
 
 export const quizQuestions = [
@@ -58,6 +58,15 @@ export const quizQuestions = [
   },
   {
     id: 7,
+    stage: "Implicação",
+    trigger: "Medo",
+    pt: "Na intimidade, o que mais gostaria de melhorar?",
+    it: "Nell'intimità, cosa vorresti migliorare di più?",
+    options: ["Ereções mais firmes", "Durar mais (controlo da ejaculação)", "Ter mais vontade", "Tudo isso"],
+    key: "intimidade"
+  },
+  {
+    id: 8,
     stage: "Consciente da solução",
     trigger: "Ambição",
     pt: "Já tentou resolver isto antes com dieta, suplementos ou treino?",
@@ -66,7 +75,7 @@ export const quizQuestions = [
     key: "tentativas"
   },
   {
-    id: 8,
+    id: 9,
     stage: "Qualificação radical",
     trigger: "Medo",
     pt: "Está disposto a seguir um protocolo simples durante 30 dias, mesmo que exija disciplina?",
@@ -75,7 +84,7 @@ export const quizQuestions = [
     key: "disposicao"
   },
   {
-    id: 9,
+    id: 10,
     stage: "Pronto para avançar",
     trigger: "Ambição",
     pt: "Quer receber agora o seu diagnóstico personalizado?",
@@ -247,3 +256,69 @@ export const upsellProduct = {
 };
 
 export const STRIPE_UPSELL_URL = "https://buy.stripe.com/14A00jfwz5xH6tfeDK4gg0G";
+// Desempenho sexual — pilares mostrados na página inicial
+export const sexualPillars = [
+  {
+    key: "ereccao",
+    title: "Ereções mais firmes",
+    why: "A ereção é um fenómeno de circulação: sangue a entrar e a ficar retido. Sedentarismo, barriga, álcool e noites mal dormidas atacam precisamente isso.",
+    works: [
+      "Treino cardiovascular que melhora o fluxo sanguíneo",
+      "Fortalecimento do pavimento pélvico (retém o sangue na ereção)",
+      "Alimentação que protege os vasos sanguíneos",
+      "Redução da gordura abdominal",
+    ],
+  },
+  {
+    key: "controlo",
+    title: "Controlo da ejaculação",
+    why: "Terminar cedo demais não é falta de \"força de vontade\". É um reflexo que se treina — com músculos, respiração e técnica.",
+    works: [
+      "Exercícios de pavimento pélvico para controlar o reflexo",
+      "Técnicas de pausa e respiração durante a relação",
+      "Gestão da ansiedade de desempenho",
+      "Rotina progressiva, passo a passo",
+    ],
+  },
+  {
+    key: "desejo",
+    title: "Mais vontade e energia",
+    why: "O desejo cai quando o corpo está em modo sobrevivência: pouco sono, stress alto e zero energia ao fim do dia.",
+    works: [
+      "Protocolo de sono para proteger a testosterona",
+      "Treino de força que aumenta energia e confiança",
+      "Luz solar e rotina matinal",
+      "Hábitos que baixam o stress crónico",
+    ],
+  },
+];
+
+// Estudos publicados que sustentam os pilares (fontes reais — não alterar sem verificar)
+export const scienceEvidence = [
+  {
+    finding: "40% dos homens recuperaram a ereção normal só com exercícios do pavimento pélvico",
+    detail: "Ensaio clínico com homens com disfunção erétil: ao fim de 6 meses de exercícios pélvicos, 40% recuperaram a função erétil normal e outros 35,5% melhoraram.",
+    source: "Dorey G. et al., British Journal of General Practice, 2004",
+  },
+  {
+    finding: "82,5% ganharam controlo sobre a ejaculação em 12 semanas",
+    detail: "Homens com ejaculação precoce ao longo da vida fizeram 12 semanas de treino do pavimento pélvico: 33 em 40 passaram a controlar o reflexo ejaculatório.",
+    source: "Pastore A.L. et al., Therapeutic Advances in Urology, 2014",
+  },
+  {
+    finding: "Exercício aeróbico regular reduz a disfunção erétil",
+    detail: "Revisão sistemática: cerca de 40 minutos de exercício aeróbico moderado a intenso, 4 vezes por semana, durante 6 meses, melhora a função erétil.",
+    source: "Gerbild H. et al., Sexual Medicine, 2018",
+  },
+  {
+    finding: "Uma semana a dormir 5 horas baixa a testosterona 10–15%",
+    detail: "Em homens jovens e saudáveis, uma única semana de sono restrito reduziu a testosterona diurna para níveis equivalentes a 10–15 anos de envelhecimento.",
+    source: "Leproult R. & Van Cauter E., JAMA, 2011",
+  },
+];
+
+// Relatos de clientes sobre desempenho sexual.
+// Adicione APENAS relatos reais, com autorização do cliente. Exemplo:
+// { name: "João", age: 44, city: "Lisboa, PT", quote: "..." }
+// Enquanto a lista estiver vazia, a secção de relatos não aparece no site.
+export const sexualTestimonials = [];
