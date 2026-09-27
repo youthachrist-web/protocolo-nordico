@@ -1,5 +1,6 @@
 import React from "react";
-import { STRIPE_CHECKOUT_URL } from "@/lib/quizData";
+import { STRIPE_CHECKOUT_URL, pixelProducts } from "@/lib/quizData";
+import { trackEvent, productParams } from "@/lib/metaPixel";
 
 export default function Footer({ variant = "light" }) {
   const isDark = variant === "dark";
@@ -22,7 +23,12 @@ export default function Footer({ variant = "light" }) {
 
         <div className="mt-6 flex flex-col items-center gap-3 text-xs text-pn-light/50">
           <div className="flex gap-5">
-            <a href={STRIPE_CHECKOUT_URL} className="hover:text-pn-gold transition-colors">Começar o protocolo</a>
+            <a
+              href={STRIPE_CHECKOUT_URL}
+              onClick={() =>
+                trackEvent("InitiateCheckout", productParams(pixelProducts.protocolo))
+              }
+              className="hover:text-pn-gold transition-colors">Começar o protocolo</a>
             <a href="/" className="hover:text-pn-gold transition-colors">Início</a>
           </div>
           <p>© {new Date().getFullYear()} Protocolo Nórdico. Todos os direitos reservados.</p>
