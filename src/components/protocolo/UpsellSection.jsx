@@ -2,6 +2,7 @@ import React from "react";
 import { Check, ArrowRight, BookOpen, ShieldCheck } from "lucide-react";
 import { upsellProduct, STRIPE_UPSELL_URL, pixelProducts } from "@/lib/quizData";
 import { trackEvent, productParams } from "@/lib/metaPixel";
+import { withTracking } from "@/lib/utm";
 
 export default function UpsellSection() {
   return (
@@ -60,7 +61,7 @@ export default function UpsellSection() {
             </div>
 
             <a
-              href={STRIPE_UPSELL_URL}
+              href={withTracking(STRIPE_UPSELL_URL)}
               onClick={() =>
                 trackEvent("InitiateCheckout", productParams(pixelProducts.ebook))
               }
