@@ -2,6 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/",
+      "destination": "https://site-production-f04e.up.railway.app/",
+      "permanent": false
+    },
+    {
       "source": "/:path*",
       "destination": "https://site-production-f04e.up.railway.app/:path*",
       "permanent": false
