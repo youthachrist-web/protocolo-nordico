@@ -10,7 +10,8 @@ import SocialProofPopup from "@/components/protocolo/SocialProofPopup";
 import CountdownBanner from "@/components/protocolo/CountdownBanner";
 import {
   buildProfile, profileAreas, transformationImages,
-  PRODUCT_PRICE
+  PRODUCT_PRICE,
+  PRODUCT_OLD_PRICE
 } from "@/lib/quizData";
 
 const STORAGE_KEY = "pn_quiz_state";
@@ -219,16 +220,17 @@ export default function Resultado() {
         <div className="mx-auto max-w-2xl px-6 text-center">
           <div className="pn-eyebrow mb-4">⏰ A sua oferta</div>
           <h2 className="pn-serif text-3xl text-pn-light md:text-4xl">
-            Comece o seu Protocolo Nórdico
+            O seu perfil mostra: está na hora de agir.
           </h2>
           <p className="mx-auto mt-4 max-w-md text-sm text-pn-light/60">
-            Acesso completo ao protocolo educativo de 28 a 40 dias.
-            Hábitos, treino, sono, alimentação e recuperação — num só método.
+            Cada semana que passa, o problema instala-se mais. O plano de 28 dias
+            ataca circulação, pavimento pélvico, sono e testosterona — em privado, no seu telemóvel.
           </p>
 
           <div className="mx-auto mt-8 max-w-sm rounded-2xl border border-pn-gold/30 bg-white/5 p-6">
-            <div className="pn-label text-[10px] text-pn-light/40">Preço de lançamento</div>
-            <div className="mt-2 flex items-end justify-center gap-2">
+            <div className="pn-label text-[10px] text-pn-light/40">Oferta de lançamento · −39%</div>
+            <div className="mt-2 flex items-end justify-center gap-3">
+              <span className="pb-2 text-lg text-pn-light/40 line-through">{PRODUCT_OLD_PRICE}</span>
               <span className="pn-serif text-5xl text-pn-gold">{PRODUCT_PRICE}</span>
             </div>
             <div className="mt-1 text-xs text-pn-light/40">Pagamento único · acesso imediato</div>
@@ -237,7 +239,7 @@ export default function Resultado() {
               to="/checkout"
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
             >
-              Quero começar o meu Protocolo Nórdico <ArrowRight className="h-4 w-4" />
+              Quero recuperar o controlo <ArrowRight className="h-4 w-4" />
             </Link>
 
             <div className="mt-4 flex items-center justify-center gap-2 text-xs text-pn-light/50">
@@ -255,6 +257,15 @@ export default function Resultado() {
 
 function buildInsights(profile, answers) {
   const out = [];
+
+  // Resposta à pergunta de intimidade — o ponto mais forte do perfil
+  const intimidade = {
+    "Ereções mais firmes": "Quer ereções mais firmes. A ereção é circulação pura: o protocolo trabalha cardio, pavimento pélvico e gordura abdominal — os três fatores que mais pesam.",
+    "Durar mais (controlo da ejaculação)": "Quer durar mais. Terminar cedo é um reflexo que se treina: exercícios pélvicos, respiração e técnica de pausa, passo a passo.",
+    "Ter mais vontade": "Quer ter mais vontade. O desejo cai quando o sono e a testosterona caem — é por aí que o protocolo começa.",
+    "Tudo isso": "Quer firmeza, controlo e vontade. Os três têm a mesma raiz — circulação, pavimento pélvico, sono e hormonas — e o protocolo ataca-os ao mesmo tempo.",
+  }[answers.intimidade];
+  if (intimidade) out.push(intimidade);
 
   if (profile.energia >= 66) {
     out.push("O seu cansaço parece frequente. Hábitos relacionados a sono e exposição à luz podem estar a influenciar a sua energia diária.");

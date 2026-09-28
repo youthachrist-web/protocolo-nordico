@@ -5,6 +5,7 @@ import { Image } from "@/components/ui/image";
 import Hero from "@/components/protocolo/Hero";
 import BeforeAfterGallery from "@/components/protocolo/BeforeAfterGallery";
 import Footer from "@/components/protocolo/Footer";
+import SocialProofPopup from "@/components/protocolo/SocialProofPopup";
 import SexualPerformanceSection from "@/components/protocolo/SexualPerformanceSection";
 import { lifestyleImages, fruitImages } from "@/lib/quizData";
 
@@ -20,6 +21,7 @@ const pillars = [
 export default function Home() {
   return (
     <div className="bg-pn-light">
+      <SocialProofPopup />
       <Hero />
 
       {/* Problema */}
@@ -27,8 +29,8 @@ export default function Home() {
         <div className="mx-auto max-w-3xl px-6 text-center">
           <div className="pn-eyebrow mb-4">Por que tantos homens sentem o mesmo</div>
           <h2 className="pn-serif text-3xl text-pn-ink md:text-4xl">
-            🔥 Aos 35, a energia já não é a mesma.
-            <span className="block text-pn-ink/50">E ninguém te explica porquê.</span>
+            🔥 Ela repara. Mesmo quando não diz nada.
+            <span className="block text-pn-ink/50">E cada mês que adia, custa mais voltar.</span>
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-pn-ink/60">
             O cansaço acumula. A barriga não sai. O sono deixa de restaurar.
@@ -41,7 +43,7 @@ export default function Home() {
             to="/quiz"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-pn-ink px-7 py-4 text-sm font-semibold text-pn-light transition-transform hover:scale-[1.02] active:scale-95"
           >
-            Fazer o meu diagnóstico <ArrowRight className="h-4 w-4" />
+            Quero recuperar o controlo <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </section>

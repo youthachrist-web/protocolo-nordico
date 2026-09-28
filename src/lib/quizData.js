@@ -148,13 +148,15 @@ export const fruitImages = {
   citrus: "https://media.base44.com/images/public/6a8ef63ffa9445f0d95ba3c3/ca9bbb3d7_generated_image.png"
 };
 
-export const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/28EbJ0eJxbG1cEL2HE9IQ00";
-export const PRODUCT_PRICE = "€16,49";
+export const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/28E9ASdFtaBX0W381Y9IQ02";
+export const PRODUCT_PRICE = "€9,98";
+// Preço anterior real (praticado antes desta oferta) — usado como âncora
+export const PRODUCT_OLD_PRICE = "€16,49";
 
 // Valores numéricos para o Meta Pixel (eventos InitiateCheckout / Purchase)
 export const pixelProducts = {
-  protocolo: { name: "Protocolo Nórdico", value: 16.49 },
-  ebook: { name: "Controlo Total", value: 9.97 },
+  protocolo: { name: "Protocolo Nórdico", value: 9.98 },
+  ebook: { name: "Controlo Total", value: 6.59 },
 };
 
 // Áreas analisadas no resultado personalizado
@@ -208,10 +210,10 @@ export const processingSteps = [
 
 // Oferta — promessas e garantias
 export const offerPromises = [
-  "Recupere a sua energia de 20 anos em 30 dias — ou o seu dinheiro de volta",
-  "Acesso imediato ao protocolo completo",
-  "Hábitos simples que cabem na sua rotina atual",
-  "Resultados visíveis nas primeiras 2 semanas",
+  "Garantia de 30 dias: se não sentir diferença, devolvemos o seu dinheiro",
+  "Ataca as causas — circulação, pavimento pélvico, sono e testosterona — não os sintomas",
+  "Sem comprimidos, sem consultas embaraçosas: tudo no seu telemóvel, em privado",
+  "Acesso imediato — começa hoje à noite",
 ];
 
 // O que está incluído no protocolo
@@ -226,18 +228,12 @@ export const whatsIncluded = [
   "Acesso vitalício e atualizações gratuitas",
 ];
 
-// Prova social — pop-ups de compras recentes
-export const socialProofData = [
-  { name: "Mário", city: "Lisboa, PT", product: "Protocolo Nórdico", minutesAgo: 2 },
-  { name: "André", city: "Porto, PT", product: "Protocolo Nórdico", minutesAgo: 5 },
-  { name: "Ricardo", city: "São Paulo, BR", product: "Protocolo Nórdico", minutesAgo: 8 },
-  { name: "Bruno", city: "Roma, IT", product: "Protocolo Nórdico", minutesAgo: 12 },
-  { name: "Tiago", city: "Milano, IT", product: "Protocolo Nórdico", minutesAgo: 15 },
-  { name: "Pedro", city: "Coimbra, PT", product: "Protocolo Nórdico", minutesAgo: 3 },
-  { name: "Luca", city: "Napoli, IT", product: "Protocolo Nórdico", minutesAgo: 7 },
-  { name: "Felipe", city: "Rio de Janeiro, BR", product: "Protocolo Nórdico", minutesAgo: 18 },
-  { name: "Nuno", city: "Braga, PT", product: "Protocolo Nórdico", minutesAgo: 1 },
-  { name: "Giovanni", city: "Torino, IT", product: "Protocolo Nórdico", minutesAgo: 9 },
+// Pop-ups de prova — factos de estudos publicados (as compras reais vêm da Stripe)
+export const proofFacts = [
+  { title: "82,5% ganharam controlo", text: "da ejaculação em 12 semanas de treino pélvico", source: "Pastore et al., 2014" },
+  { title: "40% recuperaram a ereção", text: "normal só com exercícios do pavimento pélvico", source: "Dorey et al., 2004" },
+  { title: "−15% de testosterona", text: "numa semana a dormir 5 horas por noite", source: "JAMA, 2011" },
+  { title: "Garantia de 30 dias", text: "se não sentir diferença, devolvemos o seu dinheiro", source: "Protocolo Nórdico" },
 ];
 
 // Upsell — ebook de desempenho sexual
@@ -252,10 +248,11 @@ export const upsellProduct = {
     "Protocolo de 21 dias passo a passo",
     "Acesso digital imediato",
   ],
-  price: "€9,97",
+  price: "€6,59",
+  oldPrice: "€9,97",
 };
 
-export const STRIPE_UPSELL_URL = "https://buy.stripe.com/eVqeVcgRFeSd0W31DA9IQ01";
+export const STRIPE_UPSELL_URL = "https://buy.stripe.com/dRm28q9pdcK5bAH4PM9IQ03";
 // Desempenho sexual — pilares mostrados na página inicial
 export const sexualPillars = [
   {

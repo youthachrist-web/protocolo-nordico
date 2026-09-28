@@ -10,7 +10,7 @@ export default function UpsellSection() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-pn-gold/30 bg-pn-gold/10 px-4 py-1.5">
             <span className="pn-label text-[10px] text-pn-gold-dark">
-              Oferta exclusiva · só hoje
+              Só nesta página · não volta a aparecer
             </span>
           </div>
           <h2 className="pn-serif mt-4 text-2xl text-pn-ink md:text-3xl">
@@ -45,7 +45,12 @@ export default function UpsellSection() {
             <div className="pn-label text-[10px] text-pn-light/40">
               Preço de lançamento
             </div>
-            <div className="mt-2 flex items-end justify-center gap-2">
+            <div className="mt-2 flex items-end justify-center gap-3">
+              {upsellProduct.oldPrice && (
+                <span className="pb-2 text-lg text-pn-light/40 line-through">
+                  {upsellProduct.oldPrice}
+                </span>
+              )}
               <span className="pn-serif text-5xl text-pn-gold">
                 {upsellProduct.price}
               </span>
@@ -61,7 +66,7 @@ export default function UpsellSection() {
               }
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
             >
-              Quero adicionar o ebook <ArrowRight className="h-4 w-4" />
+              Sim, quero durar mais por {upsellProduct.price} <ArrowRight className="h-4 w-4" />
             </a>
 
             <div className="mt-4 flex items-center justify-center gap-2 text-xs text-pn-light/50">
