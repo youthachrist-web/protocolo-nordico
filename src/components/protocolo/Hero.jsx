@@ -20,17 +20,17 @@ export default function Hero() {
         <div className="grid items-center gap-10 md:grid-cols-2">
           {/* Texto */}
           <div className="pn-fade-up">
-            <div className="pn-eyebrow mb-5">Protocolo Educativo · 28–40 dias</div>
+            <div className="pn-eyebrow mb-5">Para homens 35+ · Protocolo de 28 dias</div>
 
             <h1 className="pn-serif text-4xl leading-[1.1] text-pn-light md:text-5xl lg:text-6xl">
-              Recupere a sua energia
-              <span className="block text-pn-gold">de 20 anos</span>
+              Chega de ereções fracas e de terminar cedo demais.
+              <span className="block text-pn-gold">Recupere o controlo.</span>
             </h1>
 
             <p className="mt-5 max-w-md text-base leading-relaxed text-pn-light/70 md:text-lg">
-              Um protocolo simples de hábitos — sono, treino de força,
-              alimentação, luz solar e desempenho sexual — pensado para homens a partir dos 35.
-              Sem promessas milagrosas. Apenas disciplina e método.
+              O método nórdico que ataca as causas — circulação, pavimento pélvico,
+              sono e testosterona — em vez de esconder os sintomas.
+              Sem comprimidos. Sem consultas embaraçosas. Tudo em privado, no seu telemóvel.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -38,15 +38,15 @@ export default function Hero() {
                 to="/quiz"
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-pn-gold px-7 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
               >
-                Começar o meu diagnóstico
+                Fazer o teste gratuito
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <span className="text-xs text-pn-light/40">10 perguntas · 2 minutos · gratuito</span>
+              <span className="text-xs text-pn-light/40">10 perguntas · 2 minutos · 100% anónimo</span>
             </div>
 
             <div className="mt-8 flex items-center gap-4 text-xs text-pn-light/50">
               <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-pn-gold" /> +12.000 homens
+                <span className="h-1.5 w-1.5 rounded-full bg-pn-gold" /> Garantia de 30 dias
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-pn-gold" /> BR · PT · IT
@@ -68,7 +68,7 @@ export default function Hero() {
             {/* Cartão flutuante */}
             <div className="absolute -bottom-4 -left-2 rounded-xl border border-pn-gold/30 bg-pn-dark/90 px-4 py-3 backdrop-blur md:left-6">
               <div className="pn-label text-[10px] text-pn-gold">Resultado típico</div>
-              <div className="pn-serif text-sm text-pn-light">+ energia, + vontade, + confiança</div>
+              <div className="pn-serif text-sm text-pn-light">+ firmeza · + controlo · + vontade</div>
             </div>
           </div>
         </div>

@@ -14,6 +14,7 @@ import CountdownBanner from "@/components/protocolo/CountdownBanner";
 import {
   STRIPE_CHECKOUT_URL,
   PRODUCT_PRICE,
+  PRODUCT_OLD_PRICE,
   offerPromises,
   whatsIncluded,
   pixelProducts,
@@ -46,11 +47,11 @@ export default function Checkout() {
       <section className="bg-pn-dark pn-grain px-6 pb-12 pt-4 text-center md:pb-16">
         <div className="mx-auto max-w-2xl">
           <h1 className="pn-serif text-3xl text-pn-light md:text-4xl">
-            🔥 Comece o seu Protocolo Nórdico hoje
+            🔥 Hoje à noite pode ser diferente.
           </h1>
           <p className="mx-auto mt-4 max-w-md text-sm text-pn-light/60">
-            Acesso completo ao protocolo educativo de 28 a 40 dias. Hábitos,
-            treino, sono, alimentação e recuperação — num só método.
+            Firmeza, controlo e vontade não voltam sozinhos. O Protocolo Nórdico
+            dá-lhe o plano de 28 dias, passo a passo — por menos do que um jantar fora.
           </p>
         </div>
       </section>
@@ -86,7 +87,7 @@ export default function Checkout() {
           <div className="text-center">
             <div className="pn-eyebrow mb-3">A nossa promessa</div>
             <h2 className="pn-serif text-2xl text-pn-ink md:text-3xl">
-              🛡️ Resultados ou o seu dinheiro de volta
+              🛡️ Risco zero para si
             </h2>
           </div>
           <div className="mt-8 space-y-4">
@@ -109,9 +110,12 @@ export default function Checkout() {
           <div className="pn-eyebrow mb-4">⏰ A sua oferta</div>
           <div className="rounded-3xl border border-pn-gold/30 bg-white/5 p-8">
             <div className="pn-label text-[10px] text-pn-light/40">
-              Preço de lançamento
+              Oferta de lançamento · −39%
             </div>
-            <div className="mt-3 flex items-end justify-center gap-2">
+            <div className="mt-3 flex items-end justify-center gap-3">
+              <span className="pb-2 text-lg text-pn-light/40 line-through">
+                {PRODUCT_OLD_PRICE}
+              </span>
               <span className="pn-serif text-6xl text-pn-gold">
                 {PRODUCT_PRICE}
               </span>
@@ -138,7 +142,7 @@ export default function Checkout() {
               }
               className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
             >
-              Quero começar o meu Protocolo Nórdico{" "}
+              Quero recuperar o controlo por {PRODUCT_PRICE}{" "}
               <ArrowRight className="h-4 w-4" />
             </a>
 
@@ -148,11 +152,9 @@ export default function Checkout() {
             </div>
 
             <div className="mt-3 flex items-center justify-center gap-1 text-xs text-pn-light/40">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-3 w-3 fill-pn-gold text-pn-gold" />
-              ))}
+              <Star className="h-3 w-3 fill-pn-gold text-pn-gold" />
               <span className="ml-1">
-                4,9/5 · 2.847 homens já transformaram a sua energia
+                Garantia de 30 dias · se não sentir diferença, devolvemos o dinheiro
               </span>
             </div>
           </div>

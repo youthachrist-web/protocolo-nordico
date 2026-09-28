@@ -15,8 +15,9 @@ import { join } from "node:path";
 import { Readable } from "node:stream";
 
 export const PRODUCTS = {
-  protocolo: { amount: 1649, envVar: "PDF_URL_PROTOCOLO", filename: "Protocolo-Nordico.pdf" },
-  ebook: { amount: 997, envVar: "PDF_URL_EBOOK", filename: "Controlo-Total.pdf" },
+  // Aceita o preço atual e o anterior (compras feitas antes da mudança de preço)
+  protocolo: { amounts: [998, 1649], envVar: "PDF_URL_PROTOCOLO", filename: "Protocolo-Nordico.pdf" },
+  ebook: { amounts: [659, 997], envVar: "PDF_URL_EBOOK", filename: "Controlo-Total.pdf" },
 };
 
 const json = (status, error) => ({
@@ -56,7 +57,7 @@ export async function handleDownload(searchParams, env = process.env) {
   const session = await stripeRes.json();
 
   const paid = session.payment_status === "paid" || session.payment_status === "no_payment_required";
-  const rightProduct = session.currency === "eur" && session.amount_subtotal === product.amount;
+  const rightProduct = session.currency === "eur" && product.amounts.includes(session.amount_subtotal);
   if (!paid || !rightProduct) return json(403, "Pagamento não confirmado para este produto.");
 
   let body;

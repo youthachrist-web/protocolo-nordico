@@ -6,6 +6,7 @@ import { pipeline } from "node:stream/promises";
 import { extname, join, normalize } from "node:path";
 import { Readable } from "node:stream";
 import { handleDownload, PRODUCTS } from "./server/download.js";
+import { recentPurchases } from "./server/recent.js";
 
 const DIST = join(process.cwd(), "dist");
 const PORT = process.env.PORT || 3000;
@@ -51,6 +52,12 @@ async function handleUpload(req, res, url) {
 
 http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://localhost");
+
+  if (url.pathname === "/api/recent-purchases") {
+    const data = await recentPurchases().catch(() => []);
+    res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "public, max-age=60" });
+    return res.end(JSON.stringify(data));
+  }
 
   if (url.pathname === "/api/admin/upload") {
     try {
