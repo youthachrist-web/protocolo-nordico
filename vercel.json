@@ -1,6 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  "redirects": [
+    {
+      "source": "/:path*",
+      "destination": "https://site-production-f04e.up.railway.app/:path*",
+      "permanent": false
+    }
   ]
 }

@@ -17,15 +17,24 @@ export default function Obrigado() {
   const product = pixelProducts[productKey];
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState("");
+  const [pendingNotice, setPendingNotice] = useState("");
 
   // O servidor confirma o pagamento na Stripe antes de devolver o PDF
   async function downloadPdf() {
     setDownloading(true);
     setDownloadError("");
+    setPendingNotice("");
     try {
       const res = await fetch(
         `/api/download?produto=${productKey}&session_id=${encodeURIComponent(sessionId)}`
       );
+      if (res.status === 503) {
+        // Ficheiro ainda não carregado: a compra está confirmada, o envio é por email
+        setPendingNotice(
+          "Compra confirmada. O seu ebook será enviado para o email que usou no pagamento nas próximas horas."
+        );
+        return;
+      }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Não foi possível descarregar o ficheiro.");
@@ -92,6 +101,9 @@ export default function Obrigado() {
                 )}
                 Descarregar {product.name} (PDF)
               </button>
+              {pendingNotice && (
+                <p className="mt-3 text-sm text-pn-gold">{pendingNotice}</p>
+              )}
               {downloadError && (
                 <p className="mt-3 text-xs text-red-300">{downloadError}</p>
               )}
