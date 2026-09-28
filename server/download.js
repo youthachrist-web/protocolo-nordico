@@ -41,13 +41,7 @@ export async function handleDownload(searchParams, env = process.env) {
   if (!product || !/^cs_(live|test)_[A-Za-z0-9]+$/.test(sessionId)) {
     return json(400, "Pedido inválido.");
   }
-  if (!env.STRIPE_SECRET_KEY) return json(503, "Pagamento ainda não configurado no servidor.");
-  const localPdf = join(env.PDF_DIR || "/data", `${searchParams.get("produto")}.pdf`);
-  const hasLocal = existsSync(localPdf) && statSync(localPdf).size > 0;
-  const pdfUrl = env[product.envVar];
-  if (!hasLocal && !pdfUrl) {
-    return json(503, "Ficheiro ainda não disponível. Entraremos em contacto por email.");
-  }
+  if (!env.STRIPE_SECRET_KEY) return json(500, "Pagamento ainda não configurado no servidor.");
 
   const stripeRes = await fetch(
     `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`,
@@ -59,6 +53,13 @@ export async function handleDownload(searchParams, env = process.env) {
   const paid = session.payment_status === "paid" || session.payment_status === "no_payment_required";
   const rightProduct = session.currency === "eur" && product.amounts.includes(session.amount_subtotal);
   if (!paid || !rightProduct) return json(403, "Pagamento não confirmado para este produto.");
+
+  const localPdf = join(env.PDF_DIR || "/data", `${searchParams.get("produto")}.pdf`);
+  const hasLocal = existsSync(localPdf) && statSync(localPdf).size > 0;
+  const pdfUrl = env[product.envVar];
+  if (!hasLocal && !pdfUrl) {
+    return json(503, "Ficheiro ainda não disponível. Entraremos em contacto por email.");
+  }
 
   let body;
   if (hasLocal) {
