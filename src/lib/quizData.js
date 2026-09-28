@@ -148,7 +148,7 @@ export const fruitImages = {
   citrus: "https://media.base44.com/images/public/6a8ef63ffa9445f0d95ba3c3/ca9bbb3d7_generated_image.png"
 };
 
-export const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/7sY4gz4RV5xH04RcvC4gg0F";
+export const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/28EbJ0eJxbG1cEL2HE9IQ00";
 export const PRODUCT_PRICE = "€16,49";
 
 // Valores numéricos para o Meta Pixel (eventos InitiateCheckout / Purchase)
@@ -255,7 +255,7 @@ export const upsellProduct = {
   price: "€9,97",
 };
 
-export const STRIPE_UPSELL_URL = "https://buy.stripe.com/14A00jfwz5xH6tfeDK4gg0G";
+export const STRIPE_UPSELL_URL = "https://buy.stripe.com/eVqeVcgRFeSd0W31DA9IQ01";
 // Desempenho sexual — pilares mostrados na página inicial
 export const sexualPillars = [
   {
