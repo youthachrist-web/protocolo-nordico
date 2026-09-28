@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
@@ -17,16 +17,10 @@ import {
   PRODUCT_OLD_PRICE,
   offerPromises,
   whatsIncluded,
-  pixelProducts,
 } from "@/lib/quizData";
-import { trackEvent, productParams } from "@/lib/metaPixel";
 import { withTracking } from "@/lib/utm";
 
 export default function Checkout() {
-  useEffect(() => {
-    trackEvent("ViewContent", productParams(pixelProducts.protocolo));
-  }, []);
-
   return (
     <div className="bg-pn-light">
       <SocialProofPopup />
@@ -138,12 +132,9 @@ export default function Checkout() {
 
             <a
               href={withTracking(STRIPE_CHECKOUT_URL)}
-              onClick={() =>
-                trackEvent("InitiateCheckout", productParams(pixelProducts.protocolo))
-              }
               className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
             >
-              Quero recuperar o controlo por {PRODUCT_PRICE}{" "}
+              Comprar agora por {PRODUCT_PRICE}{" "}
               <ArrowRight className="h-4 w-4" />
             </a>
 
