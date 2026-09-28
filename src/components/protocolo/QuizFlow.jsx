@@ -139,21 +139,21 @@ export default function QuizFlow() {
   // ===== LEAD CAPTURE =====
   if (step === "capture") {
     return (
-      <div className="min-h-[100dvh] bg-pn-light px-6 py-10">
+      <div className="min-h-[100dvh] bg-pn-light px-5 py-12 sm:px-6">
         <div className="mx-auto max-w-md">
-          <div className="mb-6">
-            <div className="pn-eyebrow mb-2">Quase lá</div>
-            <h1 className="pn-serif text-2xl text-pn-ink md:text-3xl">
+          <div className="mb-8">
+            <div className="pn-eyebrow mb-3">Quase lá</div>
+            <h1 className="pn-serif text-2xl leading-snug text-pn-ink md:text-3xl">
               Falta apenas um passo para preparar o seu resultado personalizado.
             </h1>
-            <p className="mt-3 text-sm leading-relaxed text-pn-ink/60">
+            <p className="mt-4 text-sm leading-relaxed text-pn-ink/60">
               Informe os seus dados para liberarmos a análise do seu perfil.
               Também podemos enviar o seu resultado para o seu contacto, caso
               precise consultá-lo mais tarde.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-5">
             <Field label="Nome" error={errors.nome}>
               <input
                 type="text"
@@ -177,14 +177,14 @@ export default function QuizFlow() {
             </Field>
 
             <Field label="WhatsApp / Telefone" error={errors.telefone}>
-              <div className="flex gap-2">
+              <div className="flex items-stretch gap-2">
                 <select
                   value={lead.ddi}
                   onChange={(e) => {
                     const newDdi = e.target.value;
                     setLead({ ...lead, ddi: newDdi, telefone: maskPhone(lead.telefone, newDdi) });
                   }}
-                  className="pn-input w-32 shrink-0"
+                  className="pn-input pn-ddi"
                 >
                   <option value="+55">🇧🇷 +55</option>
                   <option value="+351">🇵🇹 +351</option>
@@ -194,9 +194,10 @@ export default function QuizFlow() {
                   type="tel"
                   value={lead.telefone}
                   onChange={(e) => setLead({ ...lead, telefone: maskPhone(e.target.value, lead.ddi) })}
-                  placeholder="912 345 678"
-                  className="pn-input flex-1"
-                  autoComplete="tel"
+                  placeholder={lead.ddi === "+55" ? "(11) 91234-5678" : lead.ddi === "+39" ? "347 123 4567" : "912 345 678"}
+                  className="pn-input pn-phone"
+                  autoComplete="tel-national"
+                  inputMode="tel"
                 />
               </div>
             </Field>
@@ -230,7 +231,7 @@ export default function QuizFlow() {
             <button
               onClick={submitLead}
               disabled={submitting}
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.01] active:scale-95 disabled:opacity-60"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.01] active:scale-95 disabled:opacity-60"
             >
               {submitting ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> A preparar…</>
@@ -239,7 +240,7 @@ export default function QuizFlow() {
               )}
             </button>
 
-            <p className="text-center text-xs text-pn-ink/40">
+            <p className="pt-1 text-center text-xs leading-relaxed text-pn-ink/40">
               Os seus dados estão seguros. Não partilhamos com terceiros.
             </p>
           </div>
@@ -256,6 +257,16 @@ export default function QuizFlow() {
             color: hsl(60 8% 15.3%);
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
+          }
+          .pn-ddi {
+            width: 6.75rem;
+            flex: none;
+            padding-left: 0.6rem;
+            padding-right: 0.4rem;
+          }
+          .pn-phone {
+            flex: 1 1 0%;
+            min-width: 0;
           }
           .pn-input:focus {
             border-color: hsl(41 53% 56.5%);
@@ -295,18 +306,10 @@ export default function QuizFlow() {
           key={qIndex}
           className={`mx-auto w-full max-w-lg ${direction === 1 ? "pn-fade-up" : "pn-fade-in"}`}
         >
-          <div className="mb-2 flex items-center gap-2">
-            <span className="pn-label text-[10px] text-pn-gold-dark">{question.stage}</span>
-            <span className="text-pn-ink/20">·</span>
-            <span className="pn-label text-[10px] text-pn-ink/40">Gatilho: {question.trigger}</span>
-          </div>
 
           <h2 className="pn-serif text-2xl leading-snug text-pn-ink md:text-3xl">
             {question.pt}
           </h2>
-          <p className="mt-2 text-sm italic text-pn-ink/45">
-            🇮🇹 {question.it}
-          </p>
 
           <div className="mt-8 space-y-3">
             {question.options.map((opt) => {
@@ -342,9 +345,9 @@ export default function QuizFlow() {
 function Field({ label, error, children }) {
   return (
     <div>
-      <label className="pn-label mb-1.5 block text-[11px] text-pn-ink/60">{label}</label>
+      <label className="pn-label mb-2 block text-[11px] text-pn-ink/60">{label}</label>
       {children}
-      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-red-600">{error}</p>}
     </div>
   );
 }
@@ -358,9 +361,10 @@ function maskPhone(value, ddi) {
     if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
     return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
   }
-  // PT / IT: 912 345 678
-  if (digits.length <= 3) return digits;
-  if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
-  if (digits.length <= 9) return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
-  return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 9)}`;
+  // PT: 912 345 678 (9 dígitos) · IT: 347 123 4567 (até 10 dígitos)
+  const max = ddi === "+39" ? 10 : 9;
+  const d = digits.slice(0, max);
+  if (d.length <= 3) return d;
+  if (d.length <= 6) return `${d.slice(0, 3)} ${d.slice(3)}`;
+  return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`;
 }
