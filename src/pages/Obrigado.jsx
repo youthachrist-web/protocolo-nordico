@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle2, Mail, ArrowLeft, Download, Loader2 } from "lucide-react";
 import Footer from "@/components/protocolo/Footer";
 import UpsellSection from "@/components/protocolo/UpsellSection";
 import { pixelProducts } from "@/lib/quizData";
-import { trackEvent, trackCustomEvent, productParams } from "@/lib/metaPixel";
 
 // Página de retorno do Stripe após o pagamento.
 // Configurar no Stripe (Payment Link → After payment → Redirect) para:
@@ -55,24 +54,7 @@ export default function Obrigado() {
     }
   }
 
-  useEffect(() => {
-    // Evita contar a mesma compra duas vezes (refresh / voltar à página)
-    const dedupeKey = `pn_purchase_${sessionId || productKey}`;
-    try {
-      if (localStorage.getItem(dedupeKey)) return;
-      localStorage.setItem(dedupeKey, "1");
-    } catch {
-      // storage indisponível — envia na mesma
-    }
-    const options = sessionId ? { eventID: sessionId } : undefined;
-    // Só o produto principal conta como Purchase (é o evento que a campanha
-    // otimiza). O upsell vai num evento próprio para não baixar o CPA falsamente.
-    if (productKey === "ebook") {
-      trackCustomEvent("CompraUpsell", productParams(product), options);
-    } else {
-      trackEvent("Purchase", productParams(product), options);
-    }
-  }, [productKey, sessionId, product]);
+  // A compra é enviada à Meta pela UTMify (webhook da Stripe + API de Conversões).
 
   return (
     <div className="bg-pn-light">

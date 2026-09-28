@@ -1,6 +1,5 @@
 import React from "react";
-import { STRIPE_CHECKOUT_URL, pixelProducts } from "@/lib/quizData";
-import { trackEvent, productParams } from "@/lib/metaPixel";
+import { STRIPE_CHECKOUT_URL } from "@/lib/quizData";
 import { withTracking } from "@/lib/utm";
 
 export default function Footer({ variant = "light" }) {
@@ -26,10 +25,7 @@ export default function Footer({ variant = "light" }) {
           <div className="flex gap-5">
             <a
               href={withTracking(STRIPE_CHECKOUT_URL)}
-              onClick={() =>
-                trackEvent("InitiateCheckout", productParams(pixelProducts.protocolo))
-              }
-              className="hover:text-pn-gold transition-colors">Começar o protocolo</a>
+              className="hover:text-pn-gold transition-colors">Comprar o protocolo</a>
             <a href="/" className="hover:text-pn-gold transition-colors">Início</a>
           </div>
           <p>© {new Date().getFullYear()} Protocolo Nórdico. Todos os direitos reservados.</p>
