@@ -1,9 +1,11 @@
 // Servidor de produção (Railway): serve o site (dist/) e a rota /api/download.
 import http from "node:http";
-import { createReadStream, existsSync, statSync } from "node:fs";
+import { createReadStream, createWriteStream, existsSync, mkdirSync, renameSync, statSync } from "node:fs";
+import { timingSafeEqual } from "node:crypto";
+import { pipeline } from "node:stream/promises";
 import { extname, join, normalize } from "node:path";
 import { Readable } from "node:stream";
-import { handleDownload } from "./server/download.js";
+import { handleDownload, PRODUCTS } from "./server/download.js";
 
 const DIST = join(process.cwd(), "dist");
 const PORT = process.env.PORT || 3000;
@@ -23,8 +25,42 @@ function sendFile(res, file) {
   createReadStream(file).pipe(res);
 }
 
+// Carregar o PDF para o disco privado: PUT /api/admin/upload?produto=protocolo
+// com o cabeçalho "Authorization: Bearer <ADMIN_TOKEN>".
+function isAdmin(req) {
+  const token = process.env.ADMIN_TOKEN || "";
+  const given = (req.headers.authorization || "").replace(/^Bearer /, "");
+  if (token.length < 32 || given.length !== token.length) return false;
+  return timingSafeEqual(Buffer.from(given), Buffer.from(token));
+}
+
+async function handleUpload(req, res, url) {
+  const produto = url.searchParams.get("produto");
+  if (req.method !== "PUT" || !isAdmin(req) || !PRODUCTS[produto]) {
+    res.writeHead(403, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ error: "Proibido." }));
+  }
+  const dir = process.env.PDF_DIR || "/data";
+  mkdirSync(dir, { recursive: true });
+  const tmp = join(dir, `${produto}.pdf.tmp`);
+  await pipeline(req, createWriteStream(tmp));
+  renameSync(tmp, join(dir, `${produto}.pdf`));
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify({ ok: true, bytes: statSync(join(dir, `${produto}.pdf`)).size }));
+}
+
 http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://localhost");
+
+  if (url.pathname === "/api/admin/upload") {
+    try {
+      return await handleUpload(req, res, url);
+    } catch (err) {
+      console.error("upload error", err);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ error: "Erro interno." }));
+    }
+  }
 
   if (url.pathname === "/api/download") {
     try {
