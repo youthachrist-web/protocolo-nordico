@@ -20,6 +20,7 @@ import {
   pixelProducts,
 } from "@/lib/quizData";
 import { trackEvent, productParams } from "@/lib/metaPixel";
+import { withTracking } from "@/lib/utm";
 
 export default function Checkout() {
   useEffect(() => {
@@ -136,7 +137,7 @@ export default function Checkout() {
             </div>
 
             <a
-              href={STRIPE_CHECKOUT_URL}
+              href={withTracking(STRIPE_CHECKOUT_URL)}
               onClick={() =>
                 trackEvent("InitiateCheckout", productParams(pixelProducts.protocolo))
               }

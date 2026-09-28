@@ -1,6 +1,7 @@
 import React from "react";
 import { STRIPE_CHECKOUT_URL, pixelProducts } from "@/lib/quizData";
 import { trackEvent, productParams } from "@/lib/metaPixel";
+import { withTracking } from "@/lib/utm";
 
 export default function Footer({ variant = "light" }) {
   const isDark = variant === "dark";
@@ -24,7 +25,7 @@ export default function Footer({ variant = "light" }) {
         <div className="mt-6 flex flex-col items-center gap-3 text-xs text-pn-light/50">
           <div className="flex gap-5">
             <a
-              href={STRIPE_CHECKOUT_URL}
+              href={withTracking(STRIPE_CHECKOUT_URL)}
               onClick={() =>
                 trackEvent("InitiateCheckout", productParams(pixelProducts.protocolo))
               }
