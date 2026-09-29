@@ -210,13 +210,14 @@ export const proofFactsVitalidade = [
 export const upsellProduct = {
   title: "Controlo Total — Ejaculação Precoce & Desempenho Sexual",
   description:
-    "Ebook educativo com protocolos práticos para ganhar controlo, durar mais e melhorar a confiança e o desempenho íntimo.",
+    "Guia de 60 páginas sobre ereções fracas e ejaculação precoce: técnicas práticas para durar mais, alimentação que protege a circulação e um protocolo de 21 dias.",
   bullets: [
-    "Técnicas de controlo para durar mais",
+    "Técnicas de controlo para durar mais (pausa, compressão, respiração)",
     "Exercícios de fortalecimento do pavimento pélvico",
-    "Hábitos que melhoram a circulação e a libido",
     "Protocolo de 21 dias passo a passo",
-    "Acesso digital imediato",
+    "15 receitas e 10 sumos para a saúde íntima e a circulação",
+    "Hábitos de sono, stress e treino que pesam no desempenho",
+    "PDF com acesso imediato",
   ],
   price: "€6,59",
   oldPrice: "€9,97",
