@@ -10,8 +10,12 @@ function formatAgo(min) {
   return h < 24 ? `há ${h} h` : `há ${Math.round(h / 24)} d`;
 }
 
-export default function SocialProofPopup() {
-  const [items, setItems] = useState(() => proofFacts.map((f) => ({ type: "fact", ...f })));
+// Só mostramos compras das últimas 6 horas: uma compra "há 18 h" passa a
+// ideia de pouca venda. Sem compras recentes, aparecem só os factos.
+const MAX_MINUTES = 6 * 60;
+
+export default function SocialProofPopup({ facts = proofFacts }) {
+  const [items, setItems] = useState(() => facts.map((f) => ({ type: "fact", ...f })));
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(false);
 
@@ -19,19 +23,21 @@ export default function SocialProofPopup() {
     fetch("/api/recent-purchases")
       .then((r) => (r.ok ? r.json() : []))
       .then((purchases) => {
-        if (!Array.isArray(purchases) || purchases.length === 0) return;
-        const buys = purchases.map((p) => ({ type: "purchase", ...p }));
+        if (!Array.isArray(purchases)) return;
+        const recent = purchases.filter((p) => p.minutesAgo <= MAX_MINUTES);
+        if (recent.length === 0) return;
+        const buys = recent.map((p) => ({ type: "purchase", ...p }));
         // intercala: compra, facto, compra, facto…
         const mixed = [];
-        const facts = proofFacts.map((f) => ({ type: "fact", ...f }));
-        for (let i = 0; i < Math.max(buys.length, facts.length); i++) {
+        const factItems = facts.map((f) => ({ type: "fact", ...f }));
+        for (let i = 0; i < Math.max(buys.length, factItems.length); i++) {
           if (buys[i]) mixed.push(buys[i]);
-          if (facts[i]) mixed.push(facts[i]);
+          if (factItems[i]) mixed.push(factItems[i]);
         }
         setItems(mixed);
       })
       .catch(() => {});
-  }, []);
+  }, [facts]);
 
   useEffect(() => {
     let mounted = true;

@@ -13,6 +13,7 @@ import Quiz from '@/pages/Quiz';
 import Resultado from '@/pages/Resultado';
 import Checkout from '@/pages/Checkout';
 import Obrigado from '@/pages/Obrigado';
+import Vitalidade from '@/pages/Vitalidade';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -46,6 +47,7 @@ const AuthenticatedApp = () => {
       <Route path="/resultado" element={<Resultado />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/obrigado" element={<Obrigado />} />
+      <Route path="/vitalidade" element={<Vitalidade />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

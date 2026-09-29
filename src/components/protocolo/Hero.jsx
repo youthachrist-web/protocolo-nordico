@@ -4,7 +4,27 @@ import { ArrowRight } from "lucide-react";
 import { Image } from "@/components/ui/image";
 import { lifestyleImages } from "@/lib/quizData";
 
-export default function Hero() {
+const COPY = {
+  // Página inicial (tráfego orgânico / quiz)
+  default: {
+    eyebrow: "Para homens 28+ · Protocolo de 28 dias",
+    title: "Chega de ereções fracas e de terminar cedo demais.",
+    accent: "Recupere o controlo.",
+    text: "O método nórdico que ataca as causas — circulação, pavimento pélvico, sono e testosterona — em vez de esconder os sintomas. Sem comprimidos. Sem consultas embaraçosas. Tudo em privado, no seu telemóvel.",
+    badge: "+ firmeza · + controlo · + vontade",
+  },
+  // Página de tráfego pago (sem referências sexuais — políticas da Meta)
+  vitalidade: {
+    eyebrow: "Para homens 28+ · Protocolo de 28 dias",
+    title: "Mais energia, mais força e um sono que recupera.",
+    accent: "Com método, não com sorte.",
+    text: "Um plano de 28 dias que organiza treino, sono, alimentação e rotina matinal — os hábitos que mais pesam na energia e no desempenho do dia a dia. Sem comprimidos, sem dietas extremas. Tudo no telemóvel.",
+    badge: "+ energia · + força · + disposição",
+  },
+};
+
+export default function Hero({ variant = "default" }) {
+  const c = COPY[variant] || COPY.default;
   return (
     <section className="relative overflow-hidden bg-pn-dark pn-grain">
       {/* Soft gold radial glow */}
@@ -20,17 +40,15 @@ export default function Hero() {
         <div className="grid items-center gap-10 md:grid-cols-2">
           {/* Texto */}
           <div className="pn-fade-up">
-            <div className="pn-eyebrow mb-5">Para homens 35+ · Protocolo de 28 dias</div>
+            <div className="pn-eyebrow mb-5">{c.eyebrow}</div>
 
             <h1 className="pn-serif text-4xl leading-[1.1] text-pn-light md:text-5xl lg:text-6xl">
-              Chega de ereções fracas e de terminar cedo demais.
-              <span className="block text-pn-gold">Recupere o controlo.</span>
+              {c.title}
+              <span className="block text-pn-gold">{c.accent}</span>
             </h1>
 
             <p className="mt-5 max-w-md text-base leading-relaxed text-pn-light/70 md:text-lg">
-              O método nórdico que ataca as causas — circulação, pavimento pélvico,
-              sono e testosterona — em vez de esconder os sintomas.
-              Sem comprimidos. Sem consultas embaraçosas. Tudo em privado, no seu telemóvel.
+              {c.text}
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -41,16 +59,16 @@ export default function Hero() {
                 Fazer o teste gratuito
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <span className="text-xs text-pn-light/40">10 perguntas · 2 minutos · 100% anónimo</span>
+              <span className="text-xs text-pn-light/40">7 perguntas · 2 minutos · 100% anónimo</span>
             </div>
 
             <div className="mt-8 flex items-center gap-4 text-xs text-pn-light/50">
               <span className="flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-pn-gold" /> Garantia de 30 dias
               </span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-pn-gold" /> BR · PT · IT
-              </span>
+              <a href="#oferta" className="flex items-center gap-1.5 underline-offset-4 hover:text-pn-gold hover:underline">
+                <span className="h-1.5 w-1.5 rounded-full bg-pn-gold" /> Ver preço e o que inclui
+              </a>
             </div>
           </div>
 
@@ -68,7 +86,7 @@ export default function Hero() {
             {/* Cartão flutuante */}
             <div className="absolute -bottom-4 -left-2 rounded-xl border border-pn-gold/30 bg-pn-dark/90 px-4 py-3 backdrop-blur md:left-6">
               <div className="pn-label text-[10px] text-pn-gold">Resultado típico</div>
-              <div className="pn-serif text-sm text-pn-light">+ firmeza · + controlo · + vontade</div>
+              <div className="pn-serif text-sm text-pn-light">{c.badge}</div>
             </div>
           </div>
         </div>
