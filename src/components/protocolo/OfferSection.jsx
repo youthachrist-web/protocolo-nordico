@@ -105,7 +105,7 @@ export default function OfferSection() {
                 href={withTracking(STRIPE_CHECKOUT_URL)}
                 className="mt-7 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
               >
-                Quero o protocolo por {PRODUCT_PRICE} <ArrowRight className="h-4 w-4" />
+                Comprar o protocolo por {PRODUCT_PRICE} <ArrowRight className="h-4 w-4" />
               </a>
               <div className="mt-3 flex items-center justify-center gap-2 text-xs text-pn-light/50">
                 <ShieldCheck className="h-3.5 w-3.5 text-pn-gold" /> Pagamento seguro via Stripe
