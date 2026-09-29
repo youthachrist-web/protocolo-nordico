@@ -258,33 +258,28 @@ export default function Resultado() {
 function buildInsights(profile, answers) {
   const out = [];
 
-  // Resposta à pergunta de intimidade — o ponto mais forte do perfil
-  const intimidade = {
-    "Ereções mais firmes": "Quer ereções mais firmes. A ereção é circulação pura: o protocolo trabalha cardio, pavimento pélvico e gordura abdominal — os três fatores que mais pesam.",
-    "Durar mais (controlo da ejaculação)": "Quer durar mais. Terminar cedo é um reflexo que se treina: exercícios pélvicos, respiração e técnica de pausa, passo a passo.",
-    "Ter mais vontade": "Quer ter mais vontade. O desejo cai quando o sono e a testosterona caem — é por aí que o protocolo começa.",
-    "Tudo isso": "Quer firmeza, controlo e vontade. Os três têm a mesma raiz — circulação, pavimento pélvico, sono e hormonas — e o protocolo ataca-os ao mesmo tempo.",
-  }[answers.intimidade];
-  if (intimidade) out.push(intimidade);
-
   if (answers.ereccao === "Sim, bastante" || answers.ereccao === "Às vezes") {
     out.push("As suas ereções perderam firmeza. Isto quase sempre começa na circulação e no pavimento pélvico — e ambos respondem a treino. Quanto mais cedo começar, mais fácil é recuperar.");
   }
 
-  if (profile.controlo >= 60) {
+  if (answers.duracao === "Menos de 2 minutos" || answers.duracao === "2 a 5 minutos" || profile.controlo >= 60) {
     out.push("Termina mais cedo do que gostaria. A ejaculação é um reflexo, e reflexos treinam-se: pavimento pélvico, respiração e técnica de pausa. Num estudo, 82,5% dos homens ganharam controlo em 12 semanas.");
   }
 
-  if (answers.impacto === "Muito" || answers.impacto === "Um pouco") {
-    out.push("Isto já está a pesar na sua confiança e na relação. Cada mês que passa, o padrão fica mais instalado — e mais difícil de inverter.");
+  if (answers.manter === "Quase nunca" || answers.manter === "Às vezes") {
+    out.push("Perde a ereção a meio. O sangue entra, mas não fica retido — e quem faz esse \"fecho\" são os músculos do pavimento pélvico, que se treinam em poucas semanas.");
+  }
+
+  if (answers.travar === "Nunca" || answers.travar === "Raramente") {
+    out.push("Não sente o ponto de não retorno a chegar. O protocolo ensina a escala de excitação de 1 a 10, para travar antes de ser tarde.");
+  }
+
+  if (answers.matinal === "Quase nunca" || answers.matinal === "Menos do que antes") {
+    out.push("Tem menos ereções matinais do que antes — um dos primeiros sinais de circulação ou testosterona em baixo. O protocolo trabalha os dois; se persistir, fale também com o seu médico.");
   }
 
   if (answers.idade === "45–54" || answers.idade === "55+") {
     out.push("Depois dos 45, a circulação e a testosterona caem mais depressa — mas também respondem bem ao treino e aos hábitos certos.");
-  }
-
-  if (answers.tentativas === "Sim, sem resultado" || answers.tentativas === "Sim, mas o resultado foi temporário") {
-    out.push("Já tentou comprimidos, sprays ou suplementos sem resultado duradouro. Esses produtos atuam no momento; o protocolo treina as causas.");
   }
 
   if (out.length === 0) {
