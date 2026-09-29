@@ -12,7 +12,7 @@ export default function BeforeAfterGallery() {
         <div className="text-center">
           <div className="pn-eyebrow mb-4">Transformações reais</div>
           <h2 className="pn-serif text-3xl text-pn-ink md:text-4xl">
-            Antes e depois de homens como você
+            Antes e depois de quem aplicou o protocolo
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm text-pn-ink/60">
             Resultados de homens que aplicaram o protocolo com disciplina.

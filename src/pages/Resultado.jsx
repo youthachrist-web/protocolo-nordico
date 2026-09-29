@@ -268,7 +268,7 @@ function buildInsights(profile, answers) {
   if (intimidade) out.push(intimidade);
 
   if (profile.energia >= 66) {
-    out.push("O seu cansaço parece frequente. Hábitos relacionados a sono e exposição à luz podem estar a influenciar a sua energia diária.");
+    out.push("O seu cansaço parece frequente. Hábitos ligados ao sono e exposição à luz podem estar a influenciar a sua energia diária.");
   } else if (profile.energia >= 33) {
     out.push("A sua energia oscila. Pequenos ajustes na rotina matinal e no descanso podem trazer mais estabilidade.");
   } else {
@@ -293,9 +293,6 @@ function buildInsights(profile, answers) {
     out.push("Já tentou resolver isto antes sem resultado duradouro. O protocolo foca-se em hábitos sustentáveis, não em soluções rápidas.");
   }
 
-  if (answers.disposicao === "Sim, aceito o desafio") {
-    out.push("Está disposto a seguir um protocolo com disciplina durante 30 dias — o perfil ideal para tirar o máximo do método.");
-  }
 
   if (out.length === 0) {
     out.push("O seu perfil está equilibrado. O protocolo ajuda a estruturar e sustentar bons hábitos a longo prazo.");

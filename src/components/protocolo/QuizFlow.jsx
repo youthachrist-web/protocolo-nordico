@@ -99,7 +99,7 @@ export default function QuizFlow() {
     }, 400);
   }
 
-  // Tela de processamento
+  // Ecrã de processamento
   useEffect(() => {
     if (step !== "processing") return;
     const timer = setTimeout(
@@ -147,9 +147,9 @@ export default function QuizFlow() {
               Falta apenas um passo para preparar o seu resultado personalizado.
             </h1>
             <p className="mt-4 text-sm leading-relaxed text-pn-ink/60">
-              Informe os seus dados para liberarmos a análise do seu perfil.
-              Também podemos enviar o seu resultado para o seu contacto, caso
-              precise consultá-lo mais tarde.
+              Indique os seus dados para desbloquearmos a análise do seu perfil.
+              Também podemos enviar o resultado para o seu contacto, caso
+              precise de o consultar mais tarde.
             </p>
           </div>
 

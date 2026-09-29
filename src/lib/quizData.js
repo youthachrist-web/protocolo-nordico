@@ -1,4 +1,4 @@
-// Dados oficiais do quiz do Protocolo Nórdico — 10 etapas
+// Dados oficiais do quiz do Protocolo Nórdico — 7 etapas
 // Cada pergunta apresenta versão PT e IT, com gatilho e etapa de consciência.
 
 export const quizQuestions = [
@@ -8,38 +8,29 @@ export const quizQuestions = [
     trigger: "Ambição",
     pt: "Qual é a sua idade?",
     it: "Qual è la tua età?",
-    options: ["30–39", "40–49", "50–59", "60+"],
+    options: ["28–34", "35–44", "45–54", "55+"],
     key: "idade"
   },
   {
     id: 2,
-    stage: "Inconsciente do problema",
-    trigger: "Ambição",
-    pt: "O que mais gostaria de recuperar da sua energia de 20 anos?",
-    it: "Cosa vorresti ritrovare di più della tua energia a 20 anni?",
-    options: ["Disposição", "Força e músculo", "Foco mental", "Tudo isso junto"],
-    key: "objetivo"
-  },
-  {
-    id: 3,
     stage: "Consciente do problema",
     trigger: "Medo",
-    pt: "Você sente cansaço que nem o café resolve?",
+    pt: "Sente um cansaço que nem o café resolve?",
     it: "Senti una stanchezza che nemmeno il caffè risolve?",
     options: ["Sempre", "Às vezes", "Raramente", "Nunca"],
     key: "cansaco"
   },
   {
-    id: 4,
+    id: 3,
     stage: "Consciente do problema",
     trigger: "Medo",
-    pt: "Tem dificuldade em perder a barriga, mesmo treinando?",
+    pt: "Tem dificuldade em perder a barriga, mesmo a treinar?",
     it: "Fai fatica a perdere la pancia, anche allenandoti?",
     options: ["Sim, muita", "Um pouco", "Não treino", "Não é um problema"],
     key: "barriga"
   },
   {
-    id: 5,
+    id: 4,
     stage: "Consciente do problema",
     trigger: "Medo",
     pt: "Como está a qualidade do seu sono?",
@@ -48,7 +39,7 @@ export const quizQuestions = [
     key: "sono"
   },
   {
-    id: 6,
+    id: 5,
     stage: "Implicação",
     trigger: "Medo",
     pt: "Isto já afeta a sua motivação, o seu humor ou a sua vida íntima?",
@@ -57,7 +48,7 @@ export const quizQuestions = [
     key: "impacto"
   },
   {
-    id: 7,
+    id: 6,
     stage: "Implicação",
     trigger: "Medo",
     pt: "Na intimidade, o que mais gostaria de melhorar?",
@@ -66,31 +57,13 @@ export const quizQuestions = [
     key: "intimidade"
   },
   {
-    id: 8,
+    id: 7,
     stage: "Consciente da solução",
     trigger: "Ambição",
     pt: "Já tentou resolver isto antes com dieta, suplementos ou treino?",
     it: "Hai già provato a risolvere questo problema con dieta, integratori o allenamento?",
     options: ["Sim, sem resultado", "Sim, mas o resultado foi temporário", "Não, é a primeira vez"],
     key: "tentativas"
-  },
-  {
-    id: 9,
-    stage: "Qualificação radical",
-    trigger: "Medo",
-    pt: "Está disposto a seguir um protocolo simples durante 30 dias, mesmo que exija disciplina?",
-    it: "Sei disposto a seguire un protocollo semplice per 30 giorni, anche se richiede disciplina?",
-    options: ["Sim, aceito o desafio", "Prefiro começar devagar"],
-    key: "disposicao"
-  },
-  {
-    id: 10,
-    stage: "Pronto para avançar",
-    trigger: "Ambição",
-    pt: "Quer receber agora o seu diagnóstico personalizado?",
-    it: "Vuoi ricevere ora la tua diagnosi personalizzata?",
-    options: ["Sim, quero o meu diagnóstico"],
-    key: "pronto"
   }
 ];
 
@@ -189,8 +162,7 @@ export function buildProfile(answers) {
     habitos,
     objetivos,
     idade: get("idade"),
-    objetivoPrincipal: get("objetivo"),
-    disposicao: get("disposicao")
+    objetivoPrincipal: get("objetivo")
   };
 }
 
@@ -201,11 +173,11 @@ function scoreFrom(value, order) {
   return Math.round((idx / (order.length - 1)) * 100);
 }
 
-// Microcopies da tela de processamento
+// Microcopies do ecrã de processamento
 export const processingSteps = [
-  "Analisando as suas respostas…",
-  "Identificando os hábitos que mais podem estar a afetar a sua energia…",
-  "Preparando o seu perfil personalizado…"
+  "A analisar as suas respostas…",
+  "A identificar os hábitos que mais podem estar a afetar a sua energia…",
+  "A preparar o seu perfil personalizado…"
 ];
 
 // Oferta — promessas e garantias
@@ -232,6 +204,12 @@ export const whatsIncluded = [
 export const proofFacts = [
   { title: "82,5% ganharam controlo", text: "da ejaculação em 12 semanas de treino pélvico", source: "Pastore et al., 2014" },
   { title: "40% recuperaram a ereção", text: "normal só com exercícios do pavimento pélvico", source: "Dorey et al., 2004" },
+  { title: "−15% de testosterona", text: "numa semana a dormir 5 horas por noite", source: "JAMA, 2011" },
+  { title: "Garantia de 30 dias", text: "se não sentir diferença, devolvemos o seu dinheiro", source: "Protocolo Nórdico" },
+];
+
+// Factos para a página de tráfego pago (sem temas sexuais)
+export const proofFactsVitalidade = [
   { title: "−15% de testosterona", text: "numa semana a dormir 5 horas por noite", source: "JAMA, 2011" },
   { title: "Garantia de 30 dias", text: "se não sentir diferença, devolvemos o seu dinheiro", source: "Protocolo Nórdico" },
 ];
@@ -319,3 +297,31 @@ export const scienceEvidence = [
 // { name: "João", age: 44, city: "Lisboa, PT", quote: "..." }
 // Enquanto a lista estiver vazia, a secção de relatos não aparece no site.
 export const sexualTestimonials = [];
+
+// ===== Blocos da oferta (página inicial e página de tráfego pago) =====
+
+// Como funciona — 3 passos
+export const howItWorks = [
+  { step: "1", title: "Faça o teste de 2 minutos", text: "7 perguntas rápidas e anónimas para perceber o que mais pesa na sua energia." },
+  { step: "2", title: "Descarregue o protocolo", text: "Logo após o pagamento, descarrega o PDF — lê no telemóvel, em privado." },
+  { step: "3", title: "Siga o plano dia a dia", text: "28 dias de treino, sono, alimentação e rotina, com ajustes ao seu nível atual." },
+];
+
+// Bónus incluídos no acesso (fazem parte da oferta atual)
+export const bonuses = [
+  { title: "Acompanhamento por WhatsApp", text: "Tire dúvidas sobre o plano durante o protocolo." },
+  { title: "Acesso vitalício + atualizações", text: "Paga uma vez e recebe todas as versões novas do protocolo." },
+];
+
+// Garantia explicada
+export const guaranteeText =
+  "Siga o protocolo durante 30 dias. Se não sentir diferença na sua energia e disposição, envie-nos um email e devolvemos 100% do valor. Sem perguntas e sem burocracia.";
+
+// Perguntas frequentes
+export const faqs = [
+  { q: "É discreto?", a: "Sim. O protocolo é um PDF que descarrega e lê no telemóvel, em privado. Não há envios físicos, nem consultas, nem comprimidos." },
+  { q: "Funciona se já tenho 50 ou 55 anos?", a: "Sim. O plano adapta-se ao seu nível atual: começa com movimentos simples e progride ao seu ritmo. Se tiver alguma condição de saúde, fale com o seu médico antes de começar." },
+  { q: "Preciso de ginásio?", a: "Não. Os treinos podem ser feitos em casa, com o peso do corpo. Se tiver acesso a um ginásio, o protocolo mostra como tirar partido dele." },
+  { q: "Como recebo o protocolo?", a: "Logo após o pagamento abre-se a página de download do PDF. O recibo segue para o email que usou na compra. É imediato." },
+  { q: "E se não resultar comigo?", a: "Tem 30 dias de garantia. Se não sentir diferença, devolvemos o dinheiro." },
+];
