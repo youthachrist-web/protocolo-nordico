@@ -1,54 +1,9 @@
-// Dados oficiais do quiz do Protocolo Nórdico — 7 etapas (5 primeiras: ereção e ejaculação precoce)
+// Dados oficiais do quiz do Protocolo Nórdico — 7 etapas: idade + 6 perguntas a alternar ereção / ejaculação precoce
 // Cada pergunta apresenta versão PT e IT, com gatilho e etapa de consciência.
 
 export const quizQuestions = [
   {
     id: 1,
-    stage: "Consciente do problema",
-    trigger: "Medo",
-    pt: "Nos últimos meses, as suas ereções ficaram menos firmes do que antes?",
-    it: "Negli ultimi mesi, le tue erezioni sono diventate meno rigide di prima?",
-    options: ["Sim, bastante", "Às vezes", "Raramente", "Não"],
-    key: "ereccao"
-  },
-  {
-    id: 2,
-    stage: "Consciente do problema",
-    trigger: "Medo",
-    pt: "Quanto tempo dura, normalmente, antes de ejacular?",
-    it: "Quanto duri, di solito, prima di eiaculare?",
-    options: ["Menos de 2 minutos", "2 a 5 minutos", "5 a 10 minutos", "Mais de 10 minutos"],
-    key: "duracao"
-  },
-  {
-    id: 3,
-    stage: "Consciente do problema",
-    trigger: "Medo",
-    pt: "Com que frequência termina antes do que queria?",
-    it: "Quanto spesso finisci prima di quanto vorresti?",
-    options: ["Quase sempre", "Muitas vezes", "Às vezes", "Nunca"],
-    key: "controlo"
-  },
-  {
-    id: 4,
-    stage: "Implicação",
-    trigger: "Medo",
-    pt: "Isto já afetou a sua confiança ou a relação com a sua parceira?",
-    it: "Questo ha già influito sulla tua sicurezza o sulla relazione con la tua partner?",
-    options: ["Muito", "Um pouco", "Ainda não, mas preocupa-me", "Não"],
-    key: "impacto"
-  },
-  {
-    id: 5,
-    stage: "Desejo",
-    trigger: "Ambição",
-    pt: "Se pudesse mudar uma coisa já este mês, qual seria?",
-    it: "Se potessi cambiare una cosa già questo mese, quale sarebbe?",
-    options: ["Ereções mais firmes", "Durar mais (controlo da ejaculação)", "Ter mais vontade", "Tudo isso"],
-    key: "intimidade"
-  },
-  {
-    id: 6,
     stage: "Qualificação",
     trigger: "Ambição",
     pt: "Qual é a sua idade?",
@@ -57,15 +12,61 @@ export const quizQuestions = [
     key: "idade"
   },
   {
-    id: 7,
-    stage: "Consciente da solução",
+    id: 2,
+    stage: "Ereção",
     trigger: "Medo",
-    pt: "Já tentou resolver isto com comprimidos, sprays ou suplementos?",
-    it: "Hai già provato a risolvere con pillole, spray o integratori?",
-    options: ["Sim, sem resultado", "Sim, mas o resultado foi temporário", "Não, é a primeira vez"],
-    key: "tentativas"
+    pt: "Nos últimos meses, as suas ereções ficaram menos firmes do que antes?",
+    it: "Negli ultimi mesi, le tue erezioni sono diventate meno rigide di prima?",
+    options: ["Sim, bastante", "Às vezes", "Raramente", "Não"],
+    key: "ereccao"
+  },
+  {
+    id: 3,
+    stage: "Ejaculação precoce",
+    trigger: "Medo",
+    pt: "Quanto tempo dura, normalmente, antes de ejacular?",
+    it: "Quanto duri, di solito, prima di eiaculare?",
+    options: ["Menos de 2 minutos", "2 a 5 minutos", "5 a 10 minutos", "Mais de 10 minutos"],
+    key: "duracao"
+  },
+  {
+    id: 4,
+    stage: "Ereção",
+    trigger: "Medo",
+    pt: "Consegue manter a ereção até ao fim da relação?",
+    it: "Riesci a mantenere l'erezione fino alla fine del rapporto?",
+    options: ["Quase nunca", "Às vezes", "Quase sempre", "Sempre"],
+    key: "manter"
+  },
+  {
+    id: 5,
+    stage: "Ejaculação precoce",
+    trigger: "Medo",
+    pt: "Com que frequência termina antes do que queria?",
+    it: "Quanto spesso finisci prima di quanto vorresti?",
+    options: ["Quase sempre", "Muitas vezes", "Às vezes", "Nunca"],
+    key: "controlo"
+  },
+  {
+    id: 6,
+    stage: "Ereção",
+    trigger: "Medo",
+    pt: "Acorda com ereções matinais tantas vezes como antes?",
+    it: "Ti svegli con erezioni mattutine spesso come prima?",
+    options: ["Quase nunca", "Menos do que antes", "Igual a antes"],
+    key: "matinal"
+  },
+  {
+    id: 7,
+    stage: "Ejaculação precoce",
+    trigger: "Ambição",
+    pt: "Consegue sentir que está perto de ejacular e travar a tempo?",
+    it: "Riesci a sentire che stai per eiaculare e fermarti in tempo?",
+    options: ["Nunca", "Raramente", "Às vezes", "Quase sempre"],
+    key: "travar"
   }
 ];
+
 
 
 // Imagens de transformação (antes/depois) — prova social
@@ -136,10 +137,10 @@ export const pixelProducts = {
 // Áreas analisadas no resultado personalizado (quanto maior, mais atenção precisa)
 export const profileAreas = [
   { key: "firmeza", label: "Firmeza", icon: "Flame" },
-  { key: "controlo", label: "Controlo", icon: "Target" },
-  { key: "confianca", label: "Confiança", icon: "Zap" },
-  { key: "vontade", label: "Vontade", icon: "Leaf" },
-  { key: "habitos", label: "Hábitos", icon: "Dumbbell" }
+  { key: "manutencao", label: "Manter a ereção", icon: "Dumbbell" },
+  { key: "circulacao", label: "Circulação", icon: "Leaf" },
+  { key: "duracao", label: "Duração", icon: "Target" },
+  { key: "controlo", label: "Controlo", icon: "Zap" }
 ];
 
 // Gera análise personalizada (educativa, não médica) a partir das respostas
@@ -148,14 +149,14 @@ export function buildProfile(answers) {
 
   // Pontuações de 0-100 por área: quanto maior, mais atenção a área precisa
   const firmeza = scoreFrom(get("ereccao"), ["Não", "Raramente", "Às vezes", "Sim, bastante"]);
+  const manutencao = scoreFrom(get("manter"), ["Sempre", "Quase sempre", "Às vezes", "Quase nunca"]);
+  const circulacao = scoreFrom(get("matinal"), ["Igual a antes", "Menos do que antes", "Quase nunca"]);
   const duracao = scoreFrom(get("duracao"), ["Mais de 10 minutos", "5 a 10 minutos", "2 a 5 minutos", "Menos de 2 minutos"]);
   const frequencia = scoreFrom(get("controlo"), ["Nunca", "Às vezes", "Muitas vezes", "Quase sempre"]);
-  const controlo = Math.round((duracao + frequencia) / 2);
-  const confianca = scoreFrom(get("impacto"), ["Não", "Ainda não, mas preocupa-me", "Um pouco", "Muito"]);
-  const vontade = ["Ter mais vontade", "Tudo isso"].includes(get("intimidade")) ? 75 : 40;
-  const habitos = scoreFrom(get("tentativas"), ["Não, é a primeira vez", "Sim, mas o resultado foi temporário", "Sim, sem resultado"]);
+  const travar = scoreFrom(get("travar"), ["Quase sempre", "Às vezes", "Raramente", "Nunca"]);
+  const controlo = Math.round((frequencia + travar) / 2);
 
-  return { firmeza, controlo, confianca, vontade, habitos, idade: get("idade") };
+  return { firmeza, manutencao, circulacao, duracao, controlo, idade: get("idade") };
 }
 
 function scoreFrom(value, order) {
