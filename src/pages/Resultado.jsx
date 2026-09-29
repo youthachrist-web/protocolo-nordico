@@ -17,12 +17,12 @@ import {
 const STORAGE_KEY = "pn_quiz_state";
 
 const benefits = [
-  "Mais consistência na rotina diária",
-  "Melhoria dos hábitos relacionados ao sono",
-  "Apoio à energia e disposição ao longo do dia",
-  "Melhor estrutura de treino, adaptada ao seu nível",
-  "Alimentação mais organizada e sustentável",
-  "Recuperação e bem-estar geral"
+  "Ereções mais firmes: treino de circulação e do pavimento pélvico",
+  "Mais controlo: técnicas para durar mais, passo a passo",
+  "Mais vontade: sono e hábitos que protegem a testosterona",
+  "Mais confiança na hora H",
+  "Treino e alimentação adaptados ao seu nível",
+  "Tudo em privado, no seu telemóvel"
 ];
 
 const iconMap = { Zap, Moon, Flame, Dumbbell, Leaf, Target };
@@ -84,8 +84,8 @@ export default function Resultado() {
           <div className="pn-eyebrow mb-4">📊 Diagnóstico personalizado</div>
           <h1 className="pn-serif text-3xl leading-snug text-pn-light md:text-4xl">
             {nome ? `${nome}, ` : ""}
-            as suas respostas mostram alguns fatores que podem estar
-            relacionados com a sua energia, disposição e recuperação.
+            as suas respostas mostram o que está a travar a sua firmeza,
+            o seu controlo e a sua confiança na intimidade.
           </h1>
           <p className="mt-5 text-sm text-pn-light/50">
             Esta análise é educativa e baseia-se apenas nas respostas que
@@ -123,7 +123,7 @@ export default function Resultado() {
                 </RadarChart>
               </ResponsiveContainer>
               <p className="mt-2 text-center text-xs text-pn-ink/40">
-                Situação atual estimada · escala educativa 0–100
+                Quanto maior, mais atenção a área precisa · escala educativa 0–100
               </p>
             </div>
 
@@ -267,35 +267,28 @@ function buildInsights(profile, answers) {
   }[answers.intimidade];
   if (intimidade) out.push(intimidade);
 
-  if (profile.energia >= 66) {
-    out.push("O seu cansaço parece frequente. Hábitos ligados ao sono e exposição à luz podem estar a influenciar a sua energia diária.");
-  } else if (profile.energia >= 33) {
-    out.push("A sua energia oscila. Pequenos ajustes na rotina matinal e no descanso podem trazer mais estabilidade.");
-  } else {
-    out.push("A sua energia parece estável. O protocolo pode ajudar a manter e otimizar esse patamar.");
+  if (answers.ereccao === "Sim, bastante" || answers.ereccao === "Às vezes") {
+    out.push("As suas ereções perderam firmeza. Isto quase sempre começa na circulação e no pavimento pélvico — e ambos respondem a treino. Quanto mais cedo começar, mais fácil é recuperar.");
   }
 
-  if (profile.sono >= 66) {
-    out.push("A qualidade do seu sono merece atenção. O protocolo inclui rotinas noturnas e de exposição à luz para apoiar o seu ciclo natural.");
-  } else if (profile.sono >= 33) {
-    out.push("O seu sono é irregular. Hábitos simples à noite podem melhorar a recuperação.");
+  if (profile.controlo >= 60) {
+    out.push("Termina mais cedo do que gostaria. A ejaculação é um reflexo, e reflexos treinam-se: pavimento pélvico, respiração e técnica de pausa. Num estudo, 82,5% dos homens ganharam controlo em 12 semanas.");
   }
 
-  if (profile.motivacao >= 50) {
-    out.push("Estes fatores parecem afetar o seu humor e motivação. Organizar a rotina costuma trazer clareza e disposição.");
+  if (answers.impacto === "Muito" || answers.impacto === "Um pouco") {
+    out.push("Isto já está a pesar na sua confiança e na relação. Cada mês que passa, o padrão fica mais instalado — e mais difícil de inverter.");
   }
 
-  if (answers.barriga && answers.barriga !== "Não é um problema") {
-    out.push("A perda de barriga é uma prioridade para si. O treino de força e a organização alimentar do protocolo são desenhados para apoiar esse objetivo.");
+  if (answers.idade === "45–54" || answers.idade === "55+") {
+    out.push("Depois dos 45, a circulação e a testosterona caem mais depressa — mas também respondem bem ao treino e aos hábitos certos.");
   }
 
   if (answers.tentativas === "Sim, sem resultado" || answers.tentativas === "Sim, mas o resultado foi temporário") {
-    out.push("Já tentou resolver isto antes sem resultado duradouro. O protocolo foca-se em hábitos sustentáveis, não em soluções rápidas.");
+    out.push("Já tentou comprimidos, sprays ou suplementos sem resultado duradouro. Esses produtos atuam no momento; o protocolo treina as causas.");
   }
 
-
   if (out.length === 0) {
-    out.push("O seu perfil está equilibrado. O protocolo ajuda a estruturar e sustentar bons hábitos a longo prazo.");
+    out.push("O seu perfil está equilibrado. O protocolo ajuda a manter a firmeza, o controlo e a energia a longo prazo.");
   }
 
   return out.slice(0, 5);
