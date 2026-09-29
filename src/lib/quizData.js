@@ -1,10 +1,55 @@
-// Dados oficiais do quiz do Protocolo Nórdico — 7 etapas
+// Dados oficiais do quiz do Protocolo Nórdico — 7 etapas (5 primeiras: ereção e ejaculação precoce)
 // Cada pergunta apresenta versão PT e IT, com gatilho e etapa de consciência.
 
 export const quizQuestions = [
   {
     id: 1,
-    stage: "Inconsciente do problema",
+    stage: "Consciente do problema",
+    trigger: "Medo",
+    pt: "Nos últimos meses, as suas ereções ficaram menos firmes do que antes?",
+    it: "Negli ultimi mesi, le tue erezioni sono diventate meno rigide di prima?",
+    options: ["Sim, bastante", "Às vezes", "Raramente", "Não"],
+    key: "ereccao"
+  },
+  {
+    id: 2,
+    stage: "Consciente do problema",
+    trigger: "Medo",
+    pt: "Quanto tempo dura, normalmente, antes de ejacular?",
+    it: "Quanto duri, di solito, prima di eiaculare?",
+    options: ["Menos de 2 minutos", "2 a 5 minutos", "5 a 10 minutos", "Mais de 10 minutos"],
+    key: "duracao"
+  },
+  {
+    id: 3,
+    stage: "Consciente do problema",
+    trigger: "Medo",
+    pt: "Com que frequência termina antes do que queria?",
+    it: "Quanto spesso finisci prima di quanto vorresti?",
+    options: ["Quase sempre", "Muitas vezes", "Às vezes", "Nunca"],
+    key: "controlo"
+  },
+  {
+    id: 4,
+    stage: "Implicação",
+    trigger: "Medo",
+    pt: "Isto já afetou a sua confiança ou a relação com a sua parceira?",
+    it: "Questo ha già influito sulla tua sicurezza o sulla relazione con la tua partner?",
+    options: ["Muito", "Um pouco", "Ainda não, mas preocupa-me", "Não"],
+    key: "impacto"
+  },
+  {
+    id: 5,
+    stage: "Desejo",
+    trigger: "Ambição",
+    pt: "Se pudesse mudar uma coisa já este mês, qual seria?",
+    it: "Se potessi cambiare una cosa già questo mese, quale sarebbe?",
+    options: ["Ereções mais firmes", "Durar mais (controlo da ejaculação)", "Ter mais vontade", "Tudo isso"],
+    key: "intimidade"
+  },
+  {
+    id: 6,
+    stage: "Qualificação",
     trigger: "Ambição",
     pt: "Qual é a sua idade?",
     it: "Qual è la tua età?",
@@ -12,60 +57,16 @@ export const quizQuestions = [
     key: "idade"
   },
   {
-    id: 2,
-    stage: "Consciente do problema",
-    trigger: "Medo",
-    pt: "Sente um cansaço que nem o café resolve?",
-    it: "Senti una stanchezza che nemmeno il caffè risolve?",
-    options: ["Sempre", "Às vezes", "Raramente", "Nunca"],
-    key: "cansaco"
-  },
-  {
-    id: 3,
-    stage: "Consciente do problema",
-    trigger: "Medo",
-    pt: "Tem dificuldade em perder a barriga, mesmo a treinar?",
-    it: "Fai fatica a perdere la pancia, anche allenandoti?",
-    options: ["Sim, muita", "Um pouco", "Não treino", "Não é um problema"],
-    key: "barriga"
-  },
-  {
-    id: 4,
-    stage: "Consciente do problema",
-    trigger: "Medo",
-    pt: "Como está a qualidade do seu sono?",
-    it: "Come è la qualità del tuo sonno?",
-    options: ["Durmo bem", "Durmo, mas não descanso", "Insónia frequente", "Muito irregular"],
-    key: "sono"
-  },
-  {
-    id: 5,
-    stage: "Implicação",
-    trigger: "Medo",
-    pt: "Isto já afeta a sua motivação, o seu humor ou a sua vida íntima?",
-    it: "Questo influisce già sulla tua motivazione, sul tuo umore o sulla tua vita intima?",
-    options: ["Muito", "Um pouco", "Ainda não, mas preocupa-me", "Não"],
-    key: "impacto"
-  },
-  {
-    id: 6,
-    stage: "Implicação",
-    trigger: "Medo",
-    pt: "Na intimidade, o que mais gostaria de melhorar?",
-    it: "Nell'intimità, cosa vorresti migliorare di più?",
-    options: ["Ereções mais firmes", "Durar mais (controlo da ejaculação)", "Ter mais vontade", "Tudo isso"],
-    key: "intimidade"
-  },
-  {
     id: 7,
     stage: "Consciente da solução",
-    trigger: "Ambição",
-    pt: "Já tentou resolver isto antes com dieta, suplementos ou treino?",
-    it: "Hai già provato a risolvere questo problema con dieta, integratori o allenamento?",
+    trigger: "Medo",
+    pt: "Já tentou resolver isto com comprimidos, sprays ou suplementos?",
+    it: "Hai già provato a risolvere con pillole, spray o integratori?",
     options: ["Sim, sem resultado", "Sim, mas o resultado foi temporário", "Não, é a primeira vez"],
     key: "tentativas"
   }
 ];
+
 
 // Imagens de transformação (antes/depois) — prova social
 export const transformationImages = [
@@ -132,38 +133,29 @@ export const pixelProducts = {
   ebook: { name: "Controlo Total", value: 6.59 },
 };
 
-// Áreas analisadas no resultado personalizado
+// Áreas analisadas no resultado personalizado (quanto maior, mais atenção precisa)
 export const profileAreas = [
-  { key: "energia", label: "Energia", icon: "Zap" },
-  { key: "sono", label: "Sono", icon: "Moon" },
-  { key: "motivacao", label: "Motivação", icon: "Flame" },
-  { key: "treino", label: "Treino", icon: "Dumbbell" },
-  { key: "habitos", label: "Hábitos", icon: "Leaf" },
-  { key: "objetivos", label: "Objetivos", icon: "Target" }
+  { key: "firmeza", label: "Firmeza", icon: "Flame" },
+  { key: "controlo", label: "Controlo", icon: "Target" },
+  { key: "confianca", label: "Confiança", icon: "Zap" },
+  { key: "vontade", label: "Vontade", icon: "Leaf" },
+  { key: "habitos", label: "Hábitos", icon: "Dumbbell" }
 ];
 
 // Gera análise personalizada (educativa, não médica) a partir das respostas
 export function buildProfile(answers) {
   const get = (key) => answers[key];
 
-  // Pontuações simples de 0-100 por área, baseadas nas respostas
-  const energia = scoreFrom(get("cansaco"), ["Nunca", "Raramente", "Às vezes", "Sempre"]);
-  const sono = scoreFrom(get("sono"), ["Durmo bem", "Durmo, mas não descanso", "Muito irregular", "Insónia frequente"]);
-  const motivacao = scoreFrom(get("impacto"), ["Não", "Ainda não, mas preocupa-me", "Um pouco", "Muito"]);
-  const treino = scoreFrom(get("barriga"), ["Não é um problema", "Não treino", "Um pouco", "Sim, muita"]);
-  const habitos = Math.round((energia + sono) / 2);
-  const objetivos = scoreFrom(get("tentativas"), ["Não, é a primeira vez", "Sim, mas o resultado foi temporário", "Sim, sem resultado"]);
+  // Pontuações de 0-100 por área: quanto maior, mais atenção a área precisa
+  const firmeza = scoreFrom(get("ereccao"), ["Não", "Raramente", "Às vezes", "Sim, bastante"]);
+  const duracao = scoreFrom(get("duracao"), ["Mais de 10 minutos", "5 a 10 minutos", "2 a 5 minutos", "Menos de 2 minutos"]);
+  const frequencia = scoreFrom(get("controlo"), ["Nunca", "Às vezes", "Muitas vezes", "Quase sempre"]);
+  const controlo = Math.round((duracao + frequencia) / 2);
+  const confianca = scoreFrom(get("impacto"), ["Não", "Ainda não, mas preocupa-me", "Um pouco", "Muito"]);
+  const vontade = ["Ter mais vontade", "Tudo isso"].includes(get("intimidade")) ? 75 : 40;
+  const habitos = scoreFrom(get("tentativas"), ["Não, é a primeira vez", "Sim, mas o resultado foi temporário", "Sim, sem resultado"]);
 
-  return {
-    energia,
-    sono,
-    motivacao,
-    treino,
-    habitos,
-    objetivos,
-    idade: get("idade"),
-    objetivoPrincipal: get("objetivo")
-  };
+  return { firmeza, controlo, confianca, vontade, habitos, idade: get("idade") };
 }
 
 function scoreFrom(value, order) {
