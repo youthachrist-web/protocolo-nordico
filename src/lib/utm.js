@@ -48,3 +48,8 @@ export function withTracking(url) {
     return url;
   }
 }
+
+// UTMs do visitante (para guardar com o contacto do quiz)
+export function getUtms() {
+  return storedUtms();
+}
