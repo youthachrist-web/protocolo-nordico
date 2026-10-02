@@ -7,6 +7,7 @@ import { extname, join, normalize } from "node:path";
 import { Readable } from "node:stream";
 import { handleDownload, PRODUCTS } from "./server/download.js";
 import { recentPurchases } from "./server/recent.js";
+import { leadsCsv, saveLead } from "./server/leads.js";
 
 const DIST = join(process.cwd(), "dist");
 const PORT = process.env.PORT || 3000;
@@ -28,9 +29,10 @@ function sendFile(res, file) {
 
 // Carregar o PDF para o disco privado: PUT /api/admin/upload?produto=protocolo
 // com o cabeçalho "Authorization: Bearer <ADMIN_TOKEN>".
-function isAdmin(req) {
+// Também aceita ?token= para descarregar a lista de contactos no browser.
+function isAdmin(req, url) {
   const token = process.env.ADMIN_TOKEN || "";
-  const given = (req.headers.authorization || "").replace(/^Bearer /, "");
+  const given = (req.headers.authorization || "").replace(/^Bearer /, "") || url?.searchParams.get("token") || "";
   if (token.length < 32 || given.length !== token.length) return false;
   return timingSafeEqual(Buffer.from(given), Buffer.from(token));
 }
@@ -57,6 +59,31 @@ http.createServer(async (req, res) => {
     const data = await recentPurchases().catch(() => []);
     res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "public, max-age=60" });
     return res.end(JSON.stringify(data));
+  }
+
+  if (url.pathname === "/api/lead") {
+    try {
+      const out = await saveLead(req);
+      res.writeHead(out.status, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(out.body));
+    } catch (err) {
+      console.error("lead error", err);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ error: "Erro interno." }));
+    }
+  }
+
+  if (url.pathname === "/api/admin/leads") {
+    if (req.method !== "GET" || !isAdmin(req, url)) {
+      res.writeHead(403, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ error: "Proibido." }));
+    }
+    res.writeHead(200, {
+      "Content-Type": "text/csv; charset=utf-8",
+      "Content-Disposition": 'attachment; filename="contactos-quiz.csv"',
+      "Cache-Control": "no-store",
+    });
+    return res.end(leadsCsv());
   }
 
   if (url.pathname === "/api/admin/upload") {

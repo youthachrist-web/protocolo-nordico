@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Check, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { quizQuestions, processingSteps } from "@/lib/quizData";
-import { base44 } from "@/api/base44Client";
 import { trackEvent } from "@/lib/metaPixel";
+import { getUtms } from "@/lib/utm";
 
 const STORAGE_KEY = "pn_quiz_state";
 
@@ -82,15 +82,21 @@ export default function QuizFlow() {
       STORAGE_KEY,
       JSON.stringify({ answers, lead })
     );
-    // Guarda no Supabase + envia email de notificação (não bloqueia o fluxo)
-    base44.functions.invoke("saveLead", {
-      nome: lead.nome,
-      email: lead.email,
-      ddi: lead.ddi,
-      telefone: lead.telefone,
-      cidade: lead.cidade,
-      desafio: lead.desafio,
-      answers
+    // Guarda o contacto no servidor (disco privado do Railway); não bloqueia o fluxo
+    fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        nome: lead.nome,
+        email: lead.email,
+        ddi: lead.ddi,
+        telefone: lead.telefone,
+        cidade: lead.cidade,
+        desafio: lead.desafio,
+        answers,
+        utms: getUtms()
+      })
     }).catch(() => {});
     trackEvent("Lead", { content_name: "Quiz Protocolo Nórdico" });
     setTimeout(() => {
