@@ -16,7 +16,7 @@ export default function QuizFlow() {
   const [direction, setDirection] = useState(1);
 
   // Lead capture
-  const [lead, setLead] = useState({ nome: "", email: "", ddi: "+351", telefone: "", cidade: "", desafio: "" });
+  const [lead, setLead] = useState({ email: "" });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -63,13 +63,7 @@ export default function QuizFlow() {
 
   function validateLead() {
     const e = {};
-    if (!lead.nome.trim()) e.nome = "Indique o seu nome";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) e.email = "E-mail inválido";
-    const digits = lead.telefone.replace(/\D/g, "");
-    const minDigits = lead.ddi === "+55" ? 10 : 8;
-    if (digits.length < minDigits) e.telefone = "Telefone inválido";
-    if (!lead.cidade.trim()) e.cidade = "Indique a sua cidade";
-    if (!lead.desafio) e.desafio = "Selecione o seu desafio";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email.trim())) e.email = "Indique um e-mail válido";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -88,12 +82,7 @@ export default function QuizFlow() {
       headers: { "Content-Type": "application/json" },
       keepalive: true,
       body: JSON.stringify({
-        nome: lead.nome,
-        email: lead.email,
-        ddi: lead.ddi,
-        telefone: lead.telefone,
-        cidade: lead.cidade,
-        desafio: lead.desafio,
+        email: lead.email.trim(),
         answers,
         utms: getUtms()
       })
@@ -153,85 +142,24 @@ export default function QuizFlow() {
               Falta apenas um passo para preparar o seu resultado personalizado.
             </h1>
             <p className="mt-4 text-sm leading-relaxed text-pn-ink/60">
-              Indique os seus dados para desbloquearmos a análise do seu perfil.
-              Também podemos enviar o resultado para o seu contacto, caso
-              precise de o consultar mais tarde.
+              Indique o seu e-mail para ver já a análise do seu perfil.
+              Leva menos de 5 segundos.
             </p>
           </div>
 
           <div className="space-y-5">
-            <Field label="Nome" error={errors.nome}>
-              <input
-                type="text"
-                value={lead.nome}
-                onChange={(e) => setLead({ ...lead, nome: e.target.value })}
-                placeholder="O seu primeiro nome"
-                className="pn-input"
-                autoComplete="given-name"
-              />
-            </Field>
-
-            <Field label="E-mail" error={errors.email}>
+            <Field label="O seu melhor e-mail" error={errors.email}>
               <input
                 type="email"
                 value={lead.email}
                 onChange={(e) => setLead({ ...lead, email: e.target.value })}
+                onKeyDown={(e) => e.key === "Enter" && submitLead()}
                 placeholder="o.seu@email.com"
                 className="pn-input"
                 autoComplete="email"
+                inputMode="email"
+                autoFocus
               />
-            </Field>
-
-            <Field label="WhatsApp / Telefone" error={errors.telefone}>
-              <div className="flex items-stretch gap-2">
-                <select
-                  value={lead.ddi}
-                  onChange={(e) => {
-                    const newDdi = e.target.value;
-                    setLead({ ...lead, ddi: newDdi, telefone: maskPhone(lead.telefone, newDdi) });
-                  }}
-                  className="pn-input pn-ddi"
-                >
-                  <option value="+55">🇧🇷 +55</option>
-                  <option value="+351">🇵🇹 +351</option>
-                  <option value="+39">🇮🇹 +39</option>
-                </select>
-                <input
-                  type="tel"
-                  value={lead.telefone}
-                  onChange={(e) => setLead({ ...lead, telefone: maskPhone(e.target.value, lead.ddi) })}
-                  placeholder={lead.ddi === "+55" ? "(11) 91234-5678" : lead.ddi === "+39" ? "347 123 4567" : "912 345 678"}
-                  className="pn-input pn-phone"
-                  autoComplete="tel-national"
-                  inputMode="tel"
-                />
-              </div>
-            </Field>
-
-            <Field label="Cidade" error={errors.cidade}>
-              <input
-                type="text"
-                value={lead.cidade}
-                onChange={(e) => setLead({ ...lead, cidade: e.target.value })}
-                placeholder="A sua cidade"
-                className="pn-input"
-                autoComplete="address-level2"
-              />
-            </Field>
-
-            <Field label="Qual é o seu maior desafio atual?" error={errors.desafio}>
-              <select
-                value={lead.desafio}
-                onChange={(e) => setLead({ ...lead, desafio: e.target.value })}
-                className="pn-input"
-              >
-                <option value="">Selecione…</option>
-                <option value="Falta de energia">Falta de energia</option>
-                <option value="Barriga / peso">Barriga / peso</option>
-                <option value="Sono fraco">Sono fraco</option>
-                <option value="Foco e motivação">Foco e motivação</option>
-                <option value="Disposição íntima">Disposição íntima</option>
-              </select>
             </Field>
 
             <button
@@ -263,16 +191,6 @@ export default function QuizFlow() {
             color: hsl(60 8% 15.3%);
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
-          }
-          .pn-ddi {
-            width: 6.75rem;
-            flex: none;
-            padding-left: 0.6rem;
-            padding-right: 0.4rem;
-          }
-          .pn-phone {
-            flex: 1 1 0%;
-            min-width: 0;
           }
           .pn-input:focus {
             border-color: hsl(41 53% 56.5%);
@@ -358,19 +276,3 @@ function Field({ label, error, children }) {
   );
 }
 
-function maskPhone(value, ddi) {
-  const digits = value.replace(/\D/g, "");
-  if (ddi === "+55") {
-    // BR: (11) 91234-5678
-    if (digits.length <= 2) return digits;
-    if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-    if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
-    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
-  }
-  // PT: 912 345 678 (9 dígitos) · IT: 347 123 4567 (até 10 dígitos)
-  const max = ddi === "+39" ? 10 : 9;
-  const d = digits.slice(0, max);
-  if (d.length <= 3) return d;
-  if (d.length <= 6) return `${d.slice(0, 3)} ${d.slice(3)}`;
-  return `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}`;
-}
