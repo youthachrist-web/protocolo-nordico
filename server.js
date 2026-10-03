@@ -11,6 +11,7 @@ import { recentPurchases } from "./server/recent.js";
 import { leadsCsv, saveLead } from "./server/leads.js";
 import { recoverAccess } from "./server/acesso.js";
 import { emailStatus, startRecoveryEmails, unsubscribe } from "./server/emails.js";
+import { timerGif } from "./server/timer.js";
 
 const DIST = join(process.cwd(), "dist");
 const PORT = process.env.PORT || 3000;
@@ -141,6 +142,12 @@ http.createServer(async (req, res) => {
       res.writeHead(500, { "Content-Type": "application/json" });
       return res.end(JSON.stringify({ error: "Erro interno." }));
     }
+  }
+
+  if (url.pathname === "/api/timer.gif") {
+    const gif = timerGif(url.searchParams);
+    res.writeHead(200, { "Content-Type": "image/gif", "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0", "Content-Length": gif.length });
+    return res.end(gif);
   }
 
   if (url.pathname === "/api/sair") {
