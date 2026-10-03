@@ -92,8 +92,24 @@ async function handleUpload(req, res, url) {
   res.end(JSON.stringify({ ok: true, bytes: statSync(join(dir, `${produto}.pdf`)).size }));
 }
 
+// Domínio próprio: quem chega pelo endereço antigo do Railway (anúncios,
+// links da Stripe) é reencaminhado para o mesmo caminho em protocolonordico.com,
+// mantendo as UTMs e o session_id. As rotas /api ficam como estão.
+const CANONICAL_HOST = process.env.CANONICAL_HOST || "protocolonordico.com";
+
+function redirectToCanonical(req, res, url) {
+  const host = String(req.headers.host || "").toLowerCase();
+  if (!CANONICAL_HOST || !host.endsWith(".up.railway.app")) return false;
+  if (req.method !== "GET" && req.method !== "HEAD") return false;
+  if (url.pathname.startsWith("/api/")) return false;
+  res.writeHead(301, { Location: `https://${CANONICAL_HOST}${url.pathname}${url.search}`, "Cache-Control": "no-cache" });
+  res.end();
+  return true;
+}
+
 http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://localhost");
+  if (redirectToCanonical(req, res, url)) return;
 
   if (url.pathname === "/api/recent-purchases") {
     const data = await recentPurchases().catch(() => []);
