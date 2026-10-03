@@ -44,6 +44,8 @@ export async function saveLead(req, env = process.env) {
   const answers = {};
   for (const [k, v] of Object.entries(data?.answers || {}).slice(0, 20)) answers[clean(k, 40)] = clean(v, 100);
   lead.respostas = answers;
+  // Prova do consentimento explícito (respostas com dados de saúde)
+  lead.consentimento = data?.consent === true;
   for (const k of ["utm_source", "utm_campaign", "utm_medium", "utm_content", "utm_term"]) {
     if (data?.utms?.[k]) lead[k] = clean(data.utms[k]);
   }
@@ -66,10 +68,10 @@ export function leadsCsv(env = process.env) {
         try { return JSON.parse(l); } catch { return null; }
       }).filter(Boolean)
     : [];
-  const cols = ["data", ...FIELDS, "utm_campaign", "utm_medium", "utm_content", "respostas"];
+  const cols = ["data", ...FIELDS, "utm_campaign", "utm_medium", "utm_content", "consentimento", "respostas"];
   const lines = [cols.join(";")];
   for (const r of rows) {
-    lines.push(cols.map((c) => csvCell(c === "respostas" ? JSON.stringify(r.respostas || {}) : r[c])).join(";"));
+    lines.push(cols.map((c) => csvCell(c === "respostas" ? JSON.stringify(r.respostas || {}) : c === "consentimento" ? (r.consentimento ? "sim" : "") : r[c])).join(";"));
   }
   return "﻿" + lines.join("\n");
 }

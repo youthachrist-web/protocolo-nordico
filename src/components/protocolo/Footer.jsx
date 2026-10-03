@@ -1,6 +1,7 @@
 import React from "react";
 import { STRIPE_CHECKOUT_URL } from "@/lib/quizData";
 import { withTracking } from "@/lib/utm";
+import { CONTACT_EMAIL, CONTROLLER_NAME } from "@/lib/legal";
 
 export default function Footer({ variant = "light" }) {
   const isDark = variant === "dark";
@@ -27,8 +28,17 @@ export default function Footer({ variant = "light" }) {
               href={withTracking(STRIPE_CHECKOUT_URL)}
               className="hover:text-pn-gold transition-colors">Comprar o protocolo</a>
             <a href="/" className="hover:text-pn-gold transition-colors">Início</a>
+            <a href="/acesso" className="hover:text-pn-gold transition-colors">A minha compra</a>
           </div>
-          <p>© {new Date().getFullYear()} Protocolo Nórdico. Todos os direitos reservados.</p>
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+            <a href="/privacidade" className="hover:text-pn-gold transition-colors">Privacidade</a>
+            <a href="/termos" className="hover:text-pn-gold transition-colors">Termos</a>
+            <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noreferrer" className="hover:text-pn-gold transition-colors">Livro de Reclamações</a>
+          </div>
+          <p>
+            Contacto: <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-pn-gold transition-colors">{CONTACT_EMAIL}</a>
+          </p>
+          <p>© {new Date().getFullYear()} Protocolo Nórdico · {CONTROLLER_NAME}. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>
