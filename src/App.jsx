@@ -15,6 +15,8 @@ import Checkout from '@/pages/Checkout';
 import Obrigado from '@/pages/Obrigado';
 import Vitalidade from '@/pages/Vitalidade';
 import Acesso from '@/pages/Acesso';
+import Privacidade from '@/pages/Privacidade';
+import Termos from '@/pages/Termos';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -50,6 +52,8 @@ const AuthenticatedApp = () => {
       <Route path="/obrigado" element={<Obrigado />} />
       <Route path="/vitalidade" element={<Vitalidade />} />
       <Route path="/acesso" element={<Acesso />} />
+      <Route path="/privacidade" element={<Privacidade />} />
+      <Route path="/termos" element={<Termos />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

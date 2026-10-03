@@ -17,6 +17,8 @@ export default function QuizFlow() {
 
   // Lead capture
   const [lead, setLead] = useState({ email: "" });
+  // Consentimento explícito: as respostas incluem dados de saúde (RGPD, art. 9.º)
+  const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -64,6 +66,7 @@ export default function QuizFlow() {
   function validateLead() {
     const e = {};
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email.trim())) e.email = "Indique um e-mail válido";
+    if (!consent) e.consent = "Confirme para podermos analisar as suas respostas";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -83,6 +86,7 @@ export default function QuizFlow() {
       keepalive: true,
       body: JSON.stringify({
         email: lead.email.trim(),
+        consent,
         answers,
         utms: getUtms()
       })
@@ -162,6 +166,25 @@ export default function QuizFlow() {
               />
             </Field>
 
+            <div>
+              <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-pn-ink/60">
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-[hsl(41_53%_56.5%)]"
+                />
+                <span>
+                  Aceito que as minhas respostas, incluindo as de saúde, sejam usadas
+                  para gerar o resultado e para receber informação do Protocolo
+                  Nórdico por email. Posso retirar o consentimento a qualquer
+                  momento.{" "}
+                  <a href="/privacidade" target="_blank" rel="noreferrer" className="underline">Política de Privacidade</a>
+                </span>
+              </label>
+              {errors.consent && <p className="mt-1.5 text-xs text-red-600">{errors.consent}</p>}
+            </div>
+
             <button
               onClick={submitLead}
               disabled={submitting}
@@ -175,7 +198,7 @@ export default function QuizFlow() {
             </button>
 
             <p className="pt-1 text-center text-xs leading-relaxed text-pn-ink/40">
-              Os seus dados estão seguros. Não partilhamos com terceiros.
+              Os seus dados estão seguros. Não vendemos os seus dados.
             </p>
           </div>
         </div>
