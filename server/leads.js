@@ -60,6 +60,31 @@ function csvCell(v) {
   return `"${safe.replace(/"/g, '""')}"`;
 }
 
+// Oferta do diagnóstico: o checkout aberto até 15 minutos depois de deixar o
+// email no quiz (com o mesmo email) recebe o guia Controlo Total grátis.
+// O minuto extra cobre a diferença entre relógios.
+export const QUIZ_OFFER_SECONDS = 15 * 60 + 60;
+
+export function quizBonusApplies(email, createdSec, env = process.env) {
+  const e = String(email || "").trim().toLowerCase();
+  if (!e || !createdSec) return false;
+  const file = leadsFile(env);
+  if (!existsSync(file)) return false;
+  return readFileSync(file, "utf8")
+    .split("\n")
+    .filter(Boolean)
+    .some((l) => {
+      try {
+        const r = JSON.parse(l);
+        if (String(r.email || "").trim().toLowerCase() !== e) return false;
+        const at = Date.parse(r.data) / 1000;
+        return createdSec >= at && createdSec <= at + QUIZ_OFFER_SECONDS;
+      } catch {
+        return false;
+      }
+    });
+}
+
 // GET /api/admin/leads → CSV com todos os contactos
 export function leadsCsv(env = process.env) {
   const file = leadsFile(env);

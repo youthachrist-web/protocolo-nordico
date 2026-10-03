@@ -1,7 +1,7 @@
 // Email de recuperação automático para contactos do quiz que não compraram.
 //
 // Funciona só com RESEND_API_KEY definida (Railway → Variables). Sem a chave,
-// não faz nada. Envia uma única vez, a quem deu consentimento no quiz, depois
+// não faz nada. Envia uma única vez a cada contacto do quiz (que não recusou), depois
 // de EMAIL_DELAY_MIN minutos (padrão 120) e só se não houver compra paga na
 // Stripe com esse email. Quem pedir para sair deixa de receber.
 //
@@ -309,7 +309,9 @@ export async function processRecoveryEmails(env = process.env, now = Date.now())
     for (const lead of leads) {
       const email = norm(lead.email);
       const age = now - Date.parse(lead.data);
-      if (!lead.consentimento || !/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(email)) continue;
+      // Contactos do formulário antigo (sem a caixa) não têm o campo e recebem
+      // um único email; nos novos, a caixa de consentimento é obrigatória.
+      if (lead.consentimento === false || !/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(email)) continue;
       if (done.has(email) || unsub.has(email)) continue;
       if (!(age >= delay && age <= MAX_AGE_DAYS * 86400000)) continue;
       done.add(email);

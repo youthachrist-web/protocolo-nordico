@@ -11,20 +11,19 @@ import Footer from "@/components/protocolo/Footer";
 import SocialProofPopup from "@/components/protocolo/SocialProofPopup";
 import UpsellSection from "@/components/protocolo/UpsellSection";
 import CountdownBanner from "@/components/protocolo/CountdownBanner";
+import { checkoutUrl, getQuizOffer } from "@/lib/quizOffer";
 import {
-  STRIPE_CHECKOUT_URL,
   PRODUCT_PRICE,
   PRODUCT_OLD_PRICE,
   offerPromises,
   whatsIncluded,
 } from "@/lib/quizData";
-import { withTracking } from "@/lib/utm";
 
 export default function Checkout() {
   return (
     <div className="bg-pn-light">
       <SocialProofPopup />
-      <CountdownBanner />
+      <CountdownBanner offer={getQuizOffer()} />
 
       {/* Voltar */}
       <div className="bg-pn-dark px-6 pt-6">
@@ -131,7 +130,7 @@ export default function Checkout() {
             </div>
 
             <a
-              href={withTracking(STRIPE_CHECKOUT_URL)}
+              href={checkoutUrl(getQuizOffer())}
               className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
             >
               Comprar agora por {PRODUCT_PRICE}{" "}

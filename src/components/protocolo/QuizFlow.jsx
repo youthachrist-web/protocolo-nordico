@@ -77,7 +77,7 @@ export default function QuizFlow() {
     // Guarda lead + respostas para a página de resultado
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ answers, lead })
+      JSON.stringify({ answers, lead, leadAt: Date.now() })
     );
     // Guarda o contacto no servidor (disco privado do Railway); não bloqueia o fluxo
     fetch("/api/lead", {

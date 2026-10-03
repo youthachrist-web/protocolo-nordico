@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from "react";
 
-export default function CountdownTimer({ minutes = 14, seconds = 59, compact = false }) {
-  const [timeLeft, setTimeLeft] = useState(minutes * 60 + seconds);
+// Contagem decrescente até um prazo real (deadline em ms). Pára no zero.
+export default function CountdownTimer({ deadline, compact = false, onExpire }) {
+  const left = () => Math.max(0, Math.floor((deadline - Date.now()) / 1000));
+  const [timeLeft, setTimeLeft] = useState(left);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) return minutes * 60 + seconds; // reinicia ao chegar a zero
-        return prev - 1;
-      });
+      const next = left();
+      setTimeLeft(next);
+      if (next === 0) {
+        clearInterval(timer);
+        onExpire?.();
+      }
     }, 1000);
     return () => clearInterval(timer);
-  }, [minutes, seconds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deadline]);
 
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
