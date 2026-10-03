@@ -124,95 +124,99 @@ P.S. Se tiver alguma dúvida, responda a este email. Leio todas as mensagens pes
 Recebeu este email porque fez a análise no nosso site. Se não quiser receber mais, responda "sair".
 `;
 
-  // HTML em estilo "lembrete": faixa de alerta, letras grandes, ícones e
-  // botões chamativos. O texto é o mesmo da versão simples, bloco a bloco.
+  // HTML com a identidade do site: Lora nos títulos, Poppins no texto,
+  // fundo creme, cabeçalho escuro com etiqueta dourada e botão dourado.
+  // O texto é o mesmo da versão simples, bloco a bloco.
   const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const FONT = "'Helvetica Neue',Helvetica,Arial,sans-serif";
-  const RED = "#d62828";
-  const GOLD = "#c9a24d";
-  const INK = "#1b1a17";
+  const SERIF = "Lora,Georgia,'Times New Roman',serif";
+  const SANS = "Poppins,'Helvetica Neue',Helvetica,Arial,sans-serif";
+  const DARK = "#1b1b16";
+  const GOLD = "#cba655";
+  const GOLD_DARK = "#b68940";
+  const LIGHT = "#faf7f0";
+  const INK = "#2a2a24";
+  const MUTED = "#6f6d66";
   const avatar = `${site}/img/goncalo-avatar.jpg`;
   const cover = `${site}/stripe/capa-protocolo.jpg`;
-  const headings = {
-    "A ligação de que lhe falei": "🔗",
-    "O que acontece se não fizer nada?": "⏳",
-    "O que fazer, passo a passo": "✅",
-    "Quanto custa": "💶",
-    "E se não resultar consigo?": "🛡️",
-  };
+  const headings = new Set([
+    "A ligação de que lhe falei",
+    "O que acontece se não fizer nada?",
+    "O que fazer, passo a passo",
+    "Quanto custa",
+    "E se não resultar consigo?",
+  ]);
   const p = (inner, extra = "") =>
-    `<p style="margin:0 0 18px;font-size:18px;line-height:1.6;color:#2b2a26;${extra}">${inner}</p>`;
+    `<p style="margin:0 0 18px;font-family:${SANS};font-size:16px;line-height:1.75;color:${INK};${extra}">${inner}</p>`;
   const button = (label) =>
-    `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:26px 0;"><tr><td align="center">
-<a href="${link}" style="display:block;background:${RED};color:#ffffff;text-decoration:none;font-family:${FONT};font-weight:800;font-size:20px;letter-spacing:.3px;padding:20px 18px;border-radius:14px;text-align:center;box-shadow:0 6px 0 #9e1c16;">${label}</a>
+    `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:28px 0;"><tr><td align="center">
+<a href="${link}" style="display:inline-block;background:${GOLD};color:${DARK};text-decoration:none;font-family:${SANS};font-weight:600;font-size:16px;padding:16px 34px;border-radius:999px;">${label}</a>
 </td></tr></table>`;
+  const list = (lines, marker) =>
+    `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 20px;">${lines
+      .map(
+        (l) =>
+          `<tr><td style="width:30px;vertical-align:top;padding:9px 0 9px 2px;">${marker}</td><td style="font-family:${SANS};font-size:15px;line-height:1.65;color:${INK};padding:6px 0;">${esc(l)}</td></tr>`
+      )
+      .join("")}</table>`;
+  const dot = `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${GOLD};margin-top:8px;"></span>`;
+  const check = `<span style="display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:50%;border:1px solid ${GOLD};color:${GOLD_DARK};font-family:${SANS};font-size:11px;margin-top:3px;">✓</span>`;
 
   const blocks = text.trim().split(/\n\n+/);
   const body = blocks
     .map((b, i) => {
       const inner = esc(b).replace(/\n/g, "<br>");
       if (i === 0) {
-        return `<p style="margin:0 0 20px;font-size:28px;line-height:1.25;font-weight:800;color:${INK};letter-spacing:-.3px;">🚨 ${inner}</p>`;
+        return `<p style="margin:0 0 22px;font-family:${SERIF};font-size:26px;line-height:1.3;color:${DARK};">${inner}</p>`;
       }
-      if (headings[b]) {
-        return `<p style="margin:34px 0 12px;font-size:22px;line-height:1.3;font-weight:800;color:${INK};">${headings[b]} ${inner}</p>`;
+      if (headings.has(b)) {
+        return `<p style="margin:34px 0 12px;font-family:${SERIF};font-size:21px;line-height:1.35;color:${DARK};">${inner}</p>`;
       }
       if (b.startsWith("– ")) {
-        const items = b
-          .split("\n")
-          .map((l) => `<tr><td style="width:30px;vertical-align:top;font-size:18px;padding:8px 0;">⚠️</td><td style="font-size:17px;line-height:1.5;color:#2b2a26;padding:8px 0;">${esc(l.replace(/^–\s*/, ""))}</td></tr>`)
-          .join("");
-        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 20px;background:#fff6f5;border:1px solid #f3c9c4;border-radius:12px;"><tr><td style="padding:10px 16px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0">${items}</table></td></tr></table>`;
+        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 20px;background:${LIGHT};border-radius:14px;"><tr><td style="padding:10px 18px;">${list(b.split("\n").map((l) => l.replace(/^–\s*/, "")), dot)}</td></tr></table>`;
       }
       if (b.startsWith("✔")) {
-        const items = b
-          .split("\n")
-          .map((l) => `<tr><td style="width:34px;vertical-align:top;padding:9px 0;"><span style="display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:${GOLD};color:${INK};font-weight:800;font-size:14px;">✓</span></td><td style="font-size:17px;line-height:1.5;color:#2b2a26;padding:9px 0;">${esc(l.replace(/^✔\s*/, ""))}</td></tr>`)
-          .join("");
-        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 20px;background:#fbf7ee;border-radius:12px;"><tr><td style="padding:10px 16px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0">${items}</table></td></tr></table>`;
+        return list(b.split("\n").map((l) => l.replace(/^✔\s*/, "")), check);
       }
       if (b.startsWith("Se se reviu")) {
-        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:6px 0 4px;"><tr><td style="border-left:5px solid ${RED};background:#fff;padding:4px 0 4px 16px;font-size:20px;line-height:1.45;font-weight:700;color:${INK};">${inner}</td></tr></table>${button("🚨 QUERO COMEÇAR HOJE")}`;
+        return `<p style="margin:8px 0 0;padding-left:16px;border-left:2px solid ${GOLD};font-family:${SERIF};font-size:19px;line-height:1.5;color:${DARK};">${inner}</p>${button("Quero começar hoje →")}`;
       }
       if (b.startsWith("Num estudo")) {
-        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:4px 0 20px;background:${INK};border-radius:14px;"><tr><td style="padding:20px;text-align:center;">
-<div style="font-size:46px;line-height:1;font-weight:800;color:${GOLD};">82,5%</div>
-<div style="margin-top:10px;font-size:16px;line-height:1.5;color:#f1ede4;">${inner}</div></td></tr></table>`;
+        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:6px 0 20px;background:${DARK};border-radius:16px;"><tr><td style="padding:24px 22px;text-align:center;">
+<div style="font-family:${SERIF};font-size:44px;line-height:1;color:${GOLD};">82,5%</div>
+<div style="margin-top:12px;font-family:${SANS};font-size:14px;line-height:1.65;color:#e9e4d8;">${inner}</div></td></tr></table>`;
       }
       if (b.startsWith("Menos do que um almoço")) {
-        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 20px;border:2px solid ${GOLD};border-radius:14px;"><tr>
-<td style="width:110px;padding:14px;vertical-align:middle;"><img src="${cover}" width="96" alt="Protocolo Nórdico" style="display:block;width:96px;border-radius:8px;"></td>
-<td style="padding:14px 14px 14px 0;vertical-align:middle;font-size:16px;line-height:1.5;color:#2b2a26;">${inner.replace("€9,98", `<span style="font-size:26px;font-weight:800;color:${RED};">€9,98</span>`)}</td></tr></table>`;
+        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 20px;border:1px solid #e6dcc4;border-radius:16px;background:#ffffff;"><tr>
+<td style="width:104px;padding:16px;vertical-align:middle;"><img src="${cover}" width="88" alt="Protocolo Nórdico" style="display:block;width:88px;border-radius:8px;"></td>
+<td style="padding:16px 16px 16px 0;vertical-align:middle;font-family:${SANS};font-size:15px;line-height:1.65;color:${INK};">${inner.replace("€9,98", `<span style="font-family:${SERIF};font-size:24px;color:${DARK};">€9,98</span>`)}</td></tr></table>`;
       }
-      if (b.startsWith("Tem 30 dias de garantia")) {
-        return p(inner, "background:#f3faf4;border-radius:12px;padding:14px 16px;");
-      }
-      if (b.startsWith("👉")) return button("🚨 QUERO COMEÇAR HOJE");
+      if (b.startsWith("Tem 30 dias de garantia")) return p(inner, `background:${LIGHT};border-radius:14px;padding:16px 18px;`);
+      if (b.startsWith("👉")) return button("Quero começar hoje →");
       if (b.startsWith("Um abraço")) {
-        return `<table role="presentation" cellspacing="0" cellpadding="0" style="margin:6px 0 20px;"><tr>
-<td style="padding-right:14px;vertical-align:middle;"><img src="${avatar}" width="64" height="64" alt="Gonçalo" style="display:block;width:64px;height:64px;border-radius:50%;object-fit:cover;"></td>
-<td style="vertical-align:middle;font-size:17px;line-height:1.45;color:#2b2a26;">${inner.replace("Gonçalo", "<strong>Gonçalo</strong>")}</td></tr></table>`;
+        return `<table role="presentation" cellspacing="0" cellpadding="0" style="margin:8px 0 22px;"><tr>
+<td style="padding-right:14px;vertical-align:middle;"><img src="${avatar}" width="56" height="56" alt="Gonçalo" style="display:block;width:56px;height:56px;border-radius:50%;object-fit:cover;"></td>
+<td style="vertical-align:middle;font-family:${SANS};font-size:15px;line-height:1.55;color:${INK};">${inner.replace("Gonçalo", `<span style="font-family:${SERIF};font-size:17px;color:${DARK};">Gonçalo</span>`)}</td></tr></table>`;
       }
-      if (b.startsWith("P.S.")) {
-        return p(inner, "font-size:16px;color:#55534d;font-style:italic;");
-      }
+      if (b.startsWith("P.S.")) return p(inner, `font-size:14px;color:${MUTED};`);
       if (b.startsWith("Recebeu este email")) {
-        return `<p style="margin:28px 0 0;font-size:12px;line-height:1.5;color:#8a8780;">${inner}<br><a href="${unsubscribeUrl(email, env)}" style="color:#8a8780;">Deixar de receber</a></p>`;
+        return `<p style="margin:26px 0 0;padding-top:18px;border-top:1px solid #ece6d8;font-family:${SANS};font-size:11px;line-height:1.6;color:#9a978e;">${inner}<br><a href="${unsubscribeUrl(email, env)}" style="color:#9a978e;">Deixar de receber</a></p>`;
       }
       return p(inner);
     })
     .join("\n");
 
-  const html = `<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"></head>
-<body style="margin:0;padding:0;background:#efeae0;">
+  const html = `<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Poppins:wght@400;600&display=swap" rel="stylesheet"></head>
+<body style="margin:0;padding:0;background:${LIGHT};">
 <span style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(preheader)}</span>
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#efeae0;"><tr><td align="center" style="padding:18px 10px;">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;font-family:${FONT};">
-<tr><td style="background:${RED};color:#ffffff;text-align:center;font-weight:800;font-size:15px;letter-spacing:1.5px;padding:12px 10px;border-radius:14px 14px 0 0;">🚨 LEMBRETE · A SUA ANÁLISE 🚨</td></tr>
-<tr><td style="background:#ffffff;padding:22px 22px 8px;border-radius:0 0 14px 14px;">
-<table role="presentation" cellspacing="0" cellpadding="0" style="margin:0 0 20px;"><tr>
-<td style="padding-right:12px;vertical-align:middle;"><img src="${avatar}" width="52" height="52" alt="Gonçalo" style="display:block;width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid ${GOLD};"></td>
-<td style="vertical-align:middle;"><div style="font-size:16px;font-weight:800;color:${INK};">Gonçalo</div><div style="font-size:13px;color:#8a8780;">Protocolo Nórdico</div></td></tr></table>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:${LIGHT};"><tr><td align="center" style="padding:20px 10px;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;">
+<tr><td style="background:${DARK};padding:22px 24px;border-radius:18px 18px 0 0;">
+<table role="presentation" cellspacing="0" cellpadding="0"><tr>
+<td style="padding-right:14px;vertical-align:middle;"><img src="${avatar}" width="48" height="48" alt="Gonçalo" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid ${GOLD};"></td>
+<td style="vertical-align:middle;"><div style="font-family:${SANS};font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:${GOLD};">Lembrete · a sua análise</div>
+<div style="margin-top:3px;font-family:${SERIF};font-size:18px;color:${LIGHT};">Gonçalo · Protocolo Nórdico</div></td></tr></table></td></tr>
+<tr><td style="background:#ffffff;padding:28px 24px 10px;border-radius:0 0 18px 18px;">
 ${body}
 </td></tr></table></td></tr></table></body></html>`;
 
