@@ -52,7 +52,17 @@ export async function handleDownload(searchParams, env = process.env) {
 
   const paid = session.payment_status === "paid" || session.payment_status === "no_payment_required";
   const rightProduct = session.currency === "eur" && product.amounts.includes(session.amount_subtotal);
-  if (!paid || !rightProduct) return json(403, "Pagamento não confirmado para este produto.");
+  if (!rightProduct) return json(403, "Pagamento não confirmado para este produto.");
+  // Multibanco: o checkout fecha com a referência por pagar; a Stripe marca a
+  // sessão como paga quando o banco confirma (pode demorar horas).
+  if (!paid && session.status === "complete") {
+    return { status: 202, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, body: JSON.stringify({ pending: true }) };
+  }
+  if (!paid) return json(403, "Pagamento não confirmado para este produto.");
+  // Só confirmar o estado (a página de obrigado usa isto ao abrir)
+  if (searchParams.get("check")) {
+    return { status: 200, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, body: JSON.stringify({ paid: true }) };
+  }
 
   const localPdf = join(env.PDF_DIR || "/data", `${searchParams.get("produto")}.pdf`);
   const hasLocal = existsSync(localPdf) && statSync(localPdf).size > 0;

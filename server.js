@@ -8,6 +8,7 @@ import { Readable } from "node:stream";
 import { handleDownload, PRODUCTS } from "./server/download.js";
 import { recentPurchases } from "./server/recent.js";
 import { leadsCsv, saveLead } from "./server/leads.js";
+import { recoverAccess } from "./server/acesso.js";
 
 const DIST = join(process.cwd(), "dist");
 const PORT = process.env.PORT || 3000;
@@ -59,6 +60,19 @@ http.createServer(async (req, res) => {
     const data = await recentPurchases().catch(() => []);
     res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "public, max-age=60" });
     return res.end(JSON.stringify(data));
+  }
+
+  if (url.pathname === "/api/acesso") {
+    try {
+      const ip = String(req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
+      const out = await recoverAccess(req, ip);
+      res.writeHead(out.status, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      return res.end(JSON.stringify(out.body));
+    } catch (err) {
+      console.error("acesso error", err);
+      res.writeHead(500, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ error: "Erro interno." }));
+    }
   }
 
   if (url.pathname === "/api/lead") {
