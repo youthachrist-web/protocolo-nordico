@@ -123,7 +123,8 @@ export const fruitImages = {
   citrus: "https://media.base44.com/images/public/6a8ef63ffa9445f0d95ba3c3/ca9bbb3d7_generated_image.png"
 };
 
-export const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/28E9ASdFtaBX0W381Y9IQ02";
+// Link com o order bump do Controlo Total (€4,99) e MB WAY / Multibanco
+export const STRIPE_CHECKOUT_URL = "https://buy.stripe.com/28E00i30PcK5207gyu9IQ09";
 export const PRODUCT_PRICE = "€9,98";
 // Preço anterior real (praticado antes desta oferta) — usado como âncora
 export const PRODUCT_OLD_PRICE = "€16,49";
