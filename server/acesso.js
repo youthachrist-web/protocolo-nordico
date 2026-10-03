@@ -5,6 +5,7 @@
 
 import { productsInSession } from "./download.js";
 import { emailBonusApplies } from "./emails.js";
+import { quizBonusApplies } from "./leads.js";
 
 const MAX_BODY = 2 * 1024;
 const LIMIT_PER_HOUR = 10;
@@ -56,7 +57,7 @@ export async function recoverAccess(req, ip, env = process.env) {
   let pendentes = 0;
   for (const s of data) {
     const produtos = productsInSession(s);
-    if (produtos.includes("protocolo") && !produtos.includes("ebook") && emailBonusApplies(s.customer_details?.email, s.created, env)) {
+    if (produtos.includes("protocolo") && !produtos.includes("ebook") && (emailBonusApplies(s.customer_details?.email, s.created, env) || quizBonusApplies(s.customer_details?.email, s.created, env))) {
       produtos.push("ebook");
     }
     if (!produtos.length) continue;

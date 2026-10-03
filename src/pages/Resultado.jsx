@@ -7,14 +7,14 @@ import { ArrowRight, Check, ShieldCheck, Zap, Moon, Flame, Dumbbell, Leaf, Targe
 import Footer from "@/components/protocolo/Footer";
 import SocialProofPopup from "@/components/protocolo/SocialProofPopup";
 import CountdownBanner from "@/components/protocolo/CountdownBanner";
+import CountdownTimer from "@/components/protocolo/CountdownTimer";
+import { checkoutUrl, getQuizOffer, QUIZ_OFFER_MINUTES } from "@/lib/quizOffer";
 import {
   buildProfile, profileAreas, scienceEvidence,
   PRODUCT_PRICE,
   PRODUCT_OLD_PRICE,
-  STRIPE_CHECKOUT_URL,
   sexualTestimonials
 } from "@/lib/quizData";
-import { withTracking } from "@/lib/utm";
 
 const STORAGE_KEY = "pn_quiz_state";
 
@@ -31,6 +31,10 @@ const iconMap = { Zap, Moon, Flame, Dumbbell, Leaf, Target };
 
 export default function Resultado() {
   const location = useLocation();
+  const [offer, setOffer] = useState(() => {
+    const o = getQuizOffer();
+    return o && o.deadline > Date.now() ? o : null;
+  });
   const [data] = useState(() => {
     // Prioridade 1: estado passado pela navegação do quiz
     if (location.state && (location.state.answers || location.state.lead)) {
@@ -78,7 +82,7 @@ export default function Resultado() {
   return (
     <div className="bg-pn-light">
       <SocialProofPopup />
-      <CountdownBanner />
+      <CountdownBanner offer={offer} onExpire={() => setOffer(null)} />
 
       {/* Headline personalizada */}
       <section className="bg-pn-dark pn-grain px-6 py-14 text-center md:py-20">
@@ -248,8 +252,23 @@ export default function Resultado() {
             </div>
             <div className="mt-1 text-xs text-pn-light/40">Pagamento único · acesso imediato</div>
 
+            {offer && (
+              <div className="mt-5 rounded-xl border border-pn-gold/40 bg-pn-gold/10 p-4 text-left">
+                <div className="pn-label text-[10px] text-pn-gold">Oferta do seu diagnóstico</div>
+                <p className="mt-1 text-sm leading-relaxed text-pn-light/85">
+                  Compre nos próximos {QUIZ_OFFER_MINUTES} minutos e recebe também o guia{" "}
+                  <strong className="text-pn-light">Controlo Total</strong> grátis
+                  (em vez de €4,99). Não precisa de o juntar no checkout: pague com{" "}
+                  <strong className="text-pn-light">{offer.email}</strong>.
+                </p>
+                <div className="mt-3">
+                  <CountdownTimer deadline={offer.deadline} onExpire={() => setOffer(null)} />
+                </div>
+              </div>
+            )}
+
             <a
-              href={withTracking(STRIPE_CHECKOUT_URL)}
+              href={checkoutUrl(offer)}
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
             >
               Comprar agora por {PRODUCT_PRICE} <ArrowRight className="h-4 w-4" />

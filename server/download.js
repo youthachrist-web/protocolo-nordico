@@ -14,6 +14,7 @@ import { createReadStream, existsSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { Readable } from "node:stream";
 import { emailBonusApplies } from "./emails.js";
+import { quizBonusApplies } from "./leads.js";
 
 export const PRODUCTS = {
   // Aceita o preço atual e o anterior (compras feitas antes da mudança de preço)
@@ -72,7 +73,7 @@ export async function handleDownload(searchParams, env = process.env) {
   const paid = session.payment_status === "paid" || session.payment_status === "no_payment_required";
   const bought = productsInSession(session);
   // Oferta do email de recuperação: Controlo Total grátis até 48 h depois do envio
-  if (bought.includes("protocolo") && !bought.includes("ebook") && emailBonusApplies(session.customer_details?.email, session.created, env)) {
+  if (bought.includes("protocolo") && !bought.includes("ebook") && (emailBonusApplies(session.customer_details?.email, session.created, env) || quizBonusApplies(session.customer_details?.email, session.created, env))) {
     bought.push("ebook");
   }
   const rightProduct = bought.includes(searchParams.get("produto"));
