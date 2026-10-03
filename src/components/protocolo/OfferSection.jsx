@@ -11,10 +11,11 @@ import {
   guaranteeText,
 } from "@/lib/quizData";
 import { withTracking } from "@/lib/utm";
+import BuyButton from "@/components/protocolo/BuyButton";
 
 // Bloco completo da oferta: como funciona → o que vem dentro → bónus →
 // preço com âncora → garantia explicada. Usado na página inicial e na /vitalidade.
-export default function OfferSection() {
+export default function OfferSection({ showBuy = false }) {
   const mainItems = whatsIncluded.filter(
     (i) => !bonuses.some((b) => i.toLowerCase().includes(b.title.split(" ")[0].toLowerCase()))
   );
@@ -39,7 +40,8 @@ export default function OfferSection() {
               </div>
             ))}
           </div>
-          <div className="mt-10 text-center">
+          {showBuy && <BuyButton tone="light" className="mt-10" />}
+          <div className={showBuy ? "mt-4 text-center" : "mt-10 text-center"}>
             <Link
               to="/quiz"
               className="inline-flex items-center gap-2 rounded-full bg-pn-ink px-7 py-4 text-sm font-semibold text-pn-light transition-transform hover:scale-[1.02] active:scale-95"

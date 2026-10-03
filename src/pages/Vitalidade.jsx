@@ -8,6 +8,8 @@ import OfferSection from "@/components/protocolo/OfferSection";
 import FaqSection from "@/components/protocolo/FaqSection";
 import { PillarsSection, FoodSection, ClosingSection } from "@/components/protocolo/SharedSections";
 import { proofFactsVitalidade } from "@/lib/quizData";
+import BuyButton from "@/components/protocolo/BuyButton";
+import StickyBuyBar from "@/components/protocolo/StickyBuyBar";
 
 // Página para tráfego pago (Meta Ads).
 // Regras: sem referências sexuais, sem fotos de antes/depois, sem frases que
@@ -23,9 +25,10 @@ const evidence = [
 
 export default function Vitalidade() {
   return (
-    <div className="bg-pn-light">
-      <SocialProofPopup facts={proofFactsVitalidade} />
-      <Hero variant="vitalidade" />
+    <div className="bg-pn-light pb-20 md:pb-0">
+      <StickyBuyBar />
+      <SocialProofPopup facts={proofFactsVitalidade} raised />
+      <Hero variant="vitalidade" showBuy />
 
       {/* Problema — em termos gerais */}
       <section className="bg-pn-light py-16 md:py-24">
@@ -41,16 +44,17 @@ export default function Vitalidade() {
             força e disposição. O Protocolo Nórdico organiza estes hábitos num
             plano simples de 28 dias, passo a passo.
           </p>
+          <BuyButton tone="light" className="mt-8" />
           <Link
             to="/quiz"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-pn-ink px-7 py-4 text-sm font-semibold text-pn-light transition-transform hover:scale-[1.02] active:scale-95"
+            className="mt-4 inline-flex items-center gap-1 text-xs text-pn-ink/50 underline-offset-4 hover:underline"
           >
-            Fazer o teste gratuito <ArrowRight className="h-4 w-4" />
+            ou fazer o teste gratuito <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
       </section>
 
-      <PillarsSection />
+      <PillarsSection showBuy />
 
       {/* Ciência */}
       <section className="bg-pn-light py-16 md:py-20">
@@ -69,13 +73,14 @@ export default function Vitalidade() {
               </div>
             </div>
           ))}
+          <BuyButton tone="light" className="mt-10" />
         </div>
       </section>
 
-      <FoodSection />
-      <OfferSection />
-      <FaqSection />
-      <ClosingSection />
+      <FoodSection showBuy />
+      <OfferSection showBuy />
+      <FaqSection showBuy />
+      <ClosingSection showBuy />
 
       <Footer variant="dark" />
     </div>

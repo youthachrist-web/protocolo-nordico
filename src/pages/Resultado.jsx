@@ -11,8 +11,11 @@ import CountdownBanner from "@/components/protocolo/CountdownBanner";
 import {
   buildProfile, profileAreas, transformationImages,
   PRODUCT_PRICE,
-  PRODUCT_OLD_PRICE
+  PRODUCT_OLD_PRICE,
+  STRIPE_CHECKOUT_URL,
+  sexualTestimonials
 } from "@/lib/quizData";
+import { withTracking } from "@/lib/utm";
 
 const STORAGE_KEY = "pn_quiz_state";
 
@@ -199,6 +202,17 @@ export default function Resultado() {
               ⭐ Histórias reais de transformação
             </h2>
           </div>
+          {/* Relatos reais sobre firmeza, controlo e confiança (quizData → sexualTestimonials) */}
+          {sexualTestimonials.length > 0 && (
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
+              {sexualTestimonials.map((t) => (
+                <figure key={t.name + t.quote} className="rounded-2xl border border-pn-gold/30 bg-white p-6 shadow-sm">
+                  <blockquote className="pn-serif text-base leading-relaxed text-pn-ink">“{t.quote}”</blockquote>
+                  <figcaption className="mt-3 text-xs text-pn-ink/50">{t.name}, {t.age} · {t.city}</figcaption>
+                </figure>
+              ))}
+            </div>
+          )}
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {transformationImages.slice(0, 3).map((t) => (
               <div key={t.url} className="overflow-hidden rounded-2xl border border-pn-ink/10 bg-white shadow-sm">
@@ -235,16 +249,16 @@ export default function Resultado() {
             </div>
             <div className="mt-1 text-xs text-pn-light/40">Pagamento único · acesso imediato</div>
 
-            <Link
-              to="/checkout"
+            <a
+              href={withTracking(STRIPE_CHECKOUT_URL)}
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
             >
-              Quero recuperar o controlo <ArrowRight className="h-4 w-4" />
-            </Link>
+              Comprar agora por {PRODUCT_PRICE} <ArrowRight className="h-4 w-4" />
+            </a>
 
             <div className="mt-4 flex items-center justify-center gap-2 text-xs text-pn-light/50">
-              <ShieldCheck className="h-3.5 w-3.5 text-pn-gold" />
-              Pagamento seguro via Stripe
+              <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-pn-gold" />
+              Pagamento seguro · MB WAY, Multibanco ou cartão · Garantia de 30 dias
             </div>
           </div>
         </div>
