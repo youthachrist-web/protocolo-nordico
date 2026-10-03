@@ -3,12 +3,12 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "https://site-production-f04e.up.railway.app/",
+      "destination": "https://protocolonordico.com/",
       "permanent": false
     },
     {
       "source": "/:path*",
-      "destination": "https://site-production-f04e.up.railway.app/:path*",
+      "destination": "https://protocolonordico.com/:path*",
       "permanent": false
     }
   ]
