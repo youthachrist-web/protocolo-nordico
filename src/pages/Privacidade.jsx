@@ -21,7 +21,7 @@ export default function Privacidade() {
           dado no fim do teste.
         </p>
         <p><strong>Compras:</strong> nome, email, país e dados da compra (produto, valor, data e método de pagamento). Os dados do cartão, MB WAY ou Multibanco são tratados diretamente pela Stripe; nunca os vemos nem os guardamos.</p>
-        <p><strong>Navegação:</strong> páginas visitadas, cliques nos botões de compra e a origem da visita, através do Pixel da Meta e da UTMify, e algumas preferências guardadas no seu navegador (por exemplo, as respostas do teste para mostrar o resultado).</p>
+        <p><strong>Navegação:</strong> a origem da visita (o anúncio em que clicou) e algumas preferências guardadas no seu navegador (por exemplo, as respostas do teste para mostrar o resultado). Só se aceitar os cookies: páginas visitadas e cliques nos botões de compra, através do Pixel da Meta e da UTMify.</p>
       </Section>
 
       <Section title="3. Para que usamos os dados e com que fundamento">
@@ -29,7 +29,8 @@ export default function Privacidade() {
           <li><strong>Mostrar o resultado do teste e enviar-lhe informação sobre o Protocolo Nórdico</strong>: com base no seu consentimento, que pode retirar a qualquer momento.</li>
           <li><strong>Processar a compra e entregar o produto</strong>: execução do contrato.</li>
           <li><strong>Cumprir obrigações fiscais e contabilísticas</strong>: obrigação legal.</li>
-          <li><strong>Medir a eficácia dos anúncios</strong> (saber que anúncio trouxe uma visita, um contacto ou uma compra): interesse legítimo em avaliar a publicidade, sem decisões automatizadas sobre si.</li>
+          <li><strong>Medir a eficácia dos anúncios</strong> com o Pixel da Meta (visitas, contactos e cliques em comprar): só com o seu consentimento, dado no aviso de cookies.</li>
+          <li><strong>Saber que anúncio originou uma compra</strong> (a compra é comunicada à Meta e à UTMify a partir da Stripe, com a origem da visita): interesse legítimo em avaliar a publicidade, sem decisões automatizadas sobre si.</li>
         </ul>
         <p>Não vendemos os seus dados a ninguém.</p>
       </Section>
@@ -48,14 +49,27 @@ export default function Privacidade() {
         </p>
       </Section>
 
-      <Section title="5. Durante quanto tempo guardamos">
+      <Section title="5. Cookies">
+        <p>
+          Ao entrar no site pode aceitar ou recusar os cookies de medição. Se
+          recusar, o Pixel da Meta não é carregado. Os únicos dados guardados no
+          seu navegador são os necessários ao funcionamento do site: a sua
+          escolha de cookies, as respostas do teste e a origem da visita.
+        </p>
+        <p>
+          Pode mudar a escolha a qualquer momento em “Preferências de cookies”,
+          no fundo de cada página.
+        </p>
+      </Section>
+
+      <Section title="6. Durante quanto tempo guardamos">
         <ul className="list-disc space-y-2 pl-5">
           <li>Dados do teste: até 24 meses ou até retirar o consentimento, o que acontecer primeiro.</li>
           <li>Dados de compra: 10 anos, como exige a lei fiscal portuguesa.</li>
         </ul>
       </Section>
 
-      <Section title="6. Os seus direitos">
+      <Section title="7. Os seus direitos">
         <p>
           Pode pedir acesso, retificação, apagamento, limitação ou portabilidade
           dos seus dados, opor-se ao seu tratamento e retirar o consentimento a

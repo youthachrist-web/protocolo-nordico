@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { STRIPE_CHECKOUT_URL, PRODUCT_PRICE, PRODUCT_OLD_PRICE } from "@/lib/quizData";
 import { withTracking } from "@/lib/utm";
+import { CONSENT_EVENT, getConsent } from "@/lib/consent";
 
 // Barra de compra fixa no fundo do ecrã (só telemóvel), visível depois de
 // passar o topo da página.
@@ -9,10 +10,15 @@ export default function StickyBuyBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 600);
+    // Fica escondida enquanto o aviso de cookies estiver aberto
+    const onScroll = () => setVisible(window.scrollY > 600 && !!getConsent());
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener(CONSENT_EVENT, onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener(CONSENT_EVENT, onScroll);
+    };
   }, []);
 
   return (

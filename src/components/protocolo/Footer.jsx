@@ -2,6 +2,7 @@ import React from "react";
 import { STRIPE_CHECKOUT_URL } from "@/lib/quizData";
 import { withTracking } from "@/lib/utm";
 import { CONTACT_EMAIL, CONTROLLER_NAME } from "@/lib/legal";
+import { resetConsent } from "@/lib/consent";
 
 export default function Footer({ variant = "light" }) {
   const isDark = variant === "dark";
@@ -34,6 +35,7 @@ export default function Footer({ variant = "light" }) {
             <a href="/privacidade" className="hover:text-pn-gold transition-colors">Privacidade</a>
             <a href="/termos" className="hover:text-pn-gold transition-colors">Termos</a>
             <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noreferrer" className="hover:text-pn-gold transition-colors">Livro de Reclamações</a>
+            <button type="button" onClick={resetConsent} className="hover:text-pn-gold transition-colors">Preferências de cookies</button>
           </div>
           <p>
             Contacto: <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-pn-gold transition-colors">{CONTACT_EMAIL}</a>

@@ -189,7 +189,6 @@ export const whatsIncluded = [
   "Protocolo de sono e recuperação",
   "Rotina matinal de energia",
   "Guia de exposição à luz solar",
-  "Acompanhamento por WhatsApp",
   "Acesso vitalício e atualizações gratuitas",
 ];
 
@@ -303,7 +302,6 @@ export const howItWorks = [
 
 // Bónus incluídos no acesso (fazem parte da oferta atual)
 export const bonuses = [
-  { title: "Acompanhamento por WhatsApp", text: "Tire dúvidas sobre o plano durante o protocolo." },
   { title: "Acesso vitalício + atualizações", text: "Paga uma vez e recebe todas as versões novas do protocolo." },
 ];
 
