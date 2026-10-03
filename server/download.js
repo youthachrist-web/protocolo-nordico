@@ -16,9 +16,22 @@ import { Readable } from "node:stream";
 
 export const PRODUCTS = {
   // Aceita o preço atual e o anterior (compras feitas antes da mudança de preço)
-  protocolo: { amounts: [998, 1649], envVar: "PDF_URL_PROTOCOLO", filename: "Protocolo-Nordico.pdf" },
-  ebook: { amounts: [659, 997], envVar: "PDF_URL_EBOOK", filename: "Controlo-Total.pdf" },
+  protocolo: { productId: "prod_VL9OoIQKgcymf0", amounts: [998, 1649], envVar: "PDF_URL_PROTOCOLO", filename: "Protocolo-Nordico.pdf" },
+  ebook: { productId: "prod_VL9OH1nRlGOd6V", amounts: [659, 997], envVar: "PDF_URL_EBOOK", filename: "Controlo-Total.pdf" },
 };
+
+// Produtos comprados numa sessão: pelos itens (inclui o order bump do checkout,
+// em que o mesmo pagamento traz os dois produtos) e, para compras antigas sem
+// itens expandidos, pelo valor total.
+export function productsInSession(session) {
+  if (session.currency !== "eur") return [];
+  const items = session.line_items?.data || [];
+  const found = Object.keys(PRODUCTS).filter((k) =>
+    items.some((li) => (li.price?.product?.id || li.price?.product) === PRODUCTS[k].productId)
+  );
+  if (found.length) return found;
+  return Object.keys(PRODUCTS).filter((k) => PRODUCTS[k].amounts.includes(session.amount_subtotal));
+}
 
 const json = (status, error) => ({
   status,
@@ -44,14 +57,15 @@ export async function handleDownload(searchParams, env = process.env) {
   if (!env.STRIPE_SECRET_KEY) return json(500, "Pagamento ainda não configurado no servidor.");
 
   const stripeRes = await fetch(
-    `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`,
+    `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=line_items`,
     { headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` } }
   );
   if (!stripeRes.ok) return json(404, "Compra não encontrada.");
   const session = await stripeRes.json();
 
   const paid = session.payment_status === "paid" || session.payment_status === "no_payment_required";
-  const rightProduct = session.currency === "eur" && product.amounts.includes(session.amount_subtotal);
+  const bought = productsInSession(session);
+  const rightProduct = bought.includes(searchParams.get("produto"));
   if (!rightProduct) return json(403, "Pagamento não confirmado para este produto.");
   // Multibanco: o checkout fecha com a referência por pagar; a Stripe marca a
   // sessão como paga quando o banco confirma (pode demorar horas).
@@ -61,7 +75,7 @@ export async function handleDownload(searchParams, env = process.env) {
   if (!paid) return json(403, "Pagamento não confirmado para este produto.");
   // Só confirmar o estado (a página de obrigado usa isto ao abrir)
   if (searchParams.get("check")) {
-    return { status: 200, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, body: JSON.stringify({ paid: true }) };
+    return { status: 200, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, body: JSON.stringify({ paid: true, produtos: bought }) };
   }
 
   const localPdf = join(env.PDF_DIR || "/data", `${searchParams.get("produto")}.pdf`);

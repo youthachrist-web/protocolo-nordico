@@ -20,6 +20,8 @@ export default function Obrigado() {
   // "paid" | "pending" (Multibanco por pagar) | "unknown"
   const [status, setStatus] = useState(sessionId ? "checking" : "unknown");
   const [copied, setCopied] = useState(false);
+  // Produtos pagos nesta sessão (com order bump vêm os dois)
+  const [produtos, setProdutos] = useState([productKey]);
 
   async function checkStatus() {
     if (!sessionId) return;
@@ -29,6 +31,10 @@ export default function Obrigado() {
         `/api/download?check=1&produto=${productKey}&session_id=${encodeURIComponent(sessionId)}`
       );
       setStatus(res.status === 202 ? "pending" : res.ok ? "paid" : "unknown");
+      if (res.ok && res.status === 200) {
+        const data = await res.json().catch(() => ({}));
+        if (Array.isArray(data.produtos) && data.produtos.length) setProdutos(data.produtos);
+      }
     } catch {
       setStatus("unknown");
     }
@@ -49,13 +55,13 @@ export default function Obrigado() {
   }
 
   // O servidor confirma o pagamento na Stripe antes de devolver o PDF
-  async function downloadPdf() {
+  async function downloadPdf(key = productKey) {
     setDownloading(true);
     setDownloadError("");
     setPendingNotice("");
     try {
       const res = await fetch(
-        `/api/download?produto=${productKey}&session_id=${encodeURIComponent(sessionId)}`
+        `/api/download?produto=${key}&session_id=${encodeURIComponent(sessionId)}`
       );
       if (res.status === 202) {
         setStatus("pending");
@@ -76,7 +82,7 @@ export default function Obrigado() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = productKey === "ebook" ? "Controlo-Total.pdf" : "Protocolo-Nordico.pdf";
+      a.download = key === "ebook" ? "Controlo-Total.pdf" : "Protocolo-Nordico.pdf";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -141,20 +147,23 @@ export default function Obrigado() {
           )}
 
           {sessionId && status !== "pending" && (
-            <div className="mx-auto mt-8 max-w-md">
-              <button
-                type="button"
-                onClick={downloadPdf}
-                disabled={downloading}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-70"
-              >
-                {downloading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Download className="h-4 w-4" />
-                )}
-                Descarregar {product.name} (PDF)
-              </button>
+            <div className="mx-auto mt-8 max-w-md space-y-3">
+              {produtos.map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => downloadPdf(key)}
+                  disabled={downloading}
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-pn-gold px-6 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-70"
+                >
+                  {downloading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Download className="h-4 w-4" />
+                  )}
+                  Descarregar {pixelProducts[key]?.name || product.name} (PDF)
+                </button>
+              ))}
               {pendingNotice && (
                 <p className="mt-3 text-sm text-pn-gold">{pendingNotice}</p>
               )}
@@ -184,7 +193,7 @@ export default function Obrigado() {
         </div>
       </section>
 
-      {productKey === "protocolo" && <UpsellSection />}
+      {productKey === "protocolo" && !produtos.includes("ebook") && <UpsellSection />}
 
       <Footer variant="dark" />
     </div>

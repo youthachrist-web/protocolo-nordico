@@ -3,7 +3,7 @@
 // pode já não ter a página de obrigado aberta. Também ajuda quem fechou a página.
 // Devolve só as compras pagas desse email, com o link para a página de download.
 
-import { PRODUCTS } from "./download.js";
+import { productsInSession } from "./download.js";
 
 const MAX_BODY = 2 * 1024;
 const LIMIT_PER_HOUR = 10;
@@ -45,7 +45,7 @@ export async function recoverAccess(req, ip, env = process.env) {
   if (!env.STRIPE_SECRET_KEY) return reply(500, { error: "Serviço indisponível." });
 
   const res = await fetch(
-    `https://api.stripe.com/v1/checkout/sessions?limit=20&status=complete&customer_details[email]=${encodeURIComponent(email)}`,
+    `https://api.stripe.com/v1/checkout/sessions?limit=20&status=complete&customer_details[email]=${encodeURIComponent(email)}&expand[]=data.line_items`,
     { headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` } }
   );
   if (!res.ok) return reply(502, { error: "Não foi possível verificar agora. Tente novamente." });
@@ -54,13 +54,14 @@ export async function recoverAccess(req, ip, env = process.env) {
   const compras = [];
   let pendentes = 0;
   for (const s of data) {
-    if (s.currency !== "eur") continue;
-    const produto = Object.keys(PRODUCTS).find((k) => PRODUCTS[k].amounts.includes(s.amount_subtotal));
-    if (!produto) continue;
-    if (s.payment_status === "paid") {
-      if (!compras.some((c) => c.produto === produto)) compras.push({ produto, session_id: s.id });
-    } else {
+    const produtos = productsInSession(s);
+    if (!produtos.length) continue;
+    if (s.payment_status !== "paid") {
       pendentes++;
+      continue;
+    }
+    for (const produto of produtos) {
+      if (!compras.some((c) => c.produto === produto)) compras.push({ produto, session_id: s.id });
     }
   }
   return reply(200, { compras, pendentes });
