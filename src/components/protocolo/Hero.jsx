@@ -101,6 +101,9 @@ export default function Hero({ variant = "default", showBuy = false }) {
             <div className="relative mx-auto aspect-[3/4] max-w-sm overflow-hidden rounded-2xl">
               <Image
                 src={lifestyleImages.hero}
+                fetchpriority="high"
+                width={800}
+                height={1075}
                 alt="Homem com físico definido, representando o resultado do Protocolo Nórdico"
                 className="h-full w-full object-cover"
                 fittingType="fill"
