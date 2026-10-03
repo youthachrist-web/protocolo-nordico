@@ -49,7 +49,17 @@ export function unsubscribeUrl(email, env = process.env) {
 
 // ---- Copy (texto aprovado; só o link aponta para o domínio) ----
 
-export function recoveryEmail(email, env = process.env) {
+const OFFER_HOURS = 48;
+
+function lisbonDeadline(ms) {
+  return new Intl.DateTimeFormat("pt-PT", { timeZone: "Europe/Lisbon", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })
+    .format(new Date(ms))
+    .replace(",", " às");
+}
+
+export function recoveryEmail(email, env = process.env, sentAt = Date.now()) {
+  const deadlineMs = sentAt + OFFER_HOURS * 3600 * 1000;
+  const deadline = lisbonDeadline(deadlineMs);
   const site = env.SITE_URL || "https://protocolonordico.com";
   const link = `${site}/vitalidade?utm_source=email&utm_medium=leads&utm_campaign=recuperacao-quiz`;
   const subject = "🚨 Há uma coisa nas suas respostas que me chamou a atenção";
@@ -101,7 +111,7 @@ Juntei tudo no Protocolo Nórdico: um plano de 28 dias, 15 minutos por dia, que 
 Quanto custa
 
 Menos do que um almoço: €9,98, pagamento único (antes €16,49). Paga por MB WAY, Multibanco ou cartão.
-No checkout pode ainda juntar o guia Controlo Total, dedicado à ejaculação precoce, por mais €4,99.
+Só através deste email, até ${deadline}, o guia Controlo Total, dedicado à ejaculação precoce, vai de oferta (em vez de €4,99). Não precisa de o juntar no checkout: pague com este mesmo email e recebe os dois PDFs.
 
 E se não resultar consigo?
 
@@ -143,7 +153,6 @@ Recebeu este email porque fez a análise no nosso site. Se não quiser receber m
     "O que acontece se não fizer nada?",
     "O que fazer, passo a passo",
     "Quanto custa",
-    "E se não resultar consigo?",
   ]);
   const p = (inner, extra = "") =>
     `<p style="margin:0 0 18px;font-family:${SANS};font-size:16px;line-height:1.75;color:${INK};${extra}">${inner}</p>`;
@@ -190,6 +199,18 @@ Recebeu este email porque fez a análise no nosso site. Se não quiser receber m
 <td style="width:104px;padding:16px;vertical-align:middle;"><img src="${cover}" width="88" alt="Protocolo Nórdico" style="display:block;width:88px;border-radius:8px;"></td>
 <td style="padding:16px 16px 16px 0;vertical-align:middle;font-family:${SANS};font-size:15px;line-height:1.65;color:${INK};">${inner.replace("€9,98", `<span style="font-family:${SERIF};font-size:24px;color:${DARK};">€9,98</span>`)}</td></tr></table>`;
       }
+      if (b.startsWith("E se não resultar consigo?")) {
+        // Cartão da oferta com temporizador, antes da garantia
+        return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:6px 0 8px;background:${DARK};border-radius:18px;"><tr><td style="padding:24px 20px;text-align:center;">
+<div style="font-family:${SANS};font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:${GOLD};">Oferta só para si</div>
+<div style="margin-top:10px;font-family:${SERIF};font-size:22px;line-height:1.35;color:${LIGHT};">Protocolo Nórdico <span style="color:${GOLD};">€9,98</span><br>+ guia Controlo Total <span style="color:${GOLD};">grátis</span></div>
+<div style="margin-top:6px;font-family:${SANS};font-size:13px;color:#b9b4a6;"><s>€16,49 + €4,99</s> · poupa €11,50</div>
+<img src="${site}/api/timer.gif?ate=${Math.floor(deadlineMs / 1000)}" width="300" height="76" alt="Termina ${deadline}" style="display:block;margin:18px auto 4px;width:300px;max-width:100%;height:auto;">
+<div style="font-family:${SANS};font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8f8a7c;">horas · minutos · segundos</div>
+<div style="margin-top:10px;font-family:${SANS};font-size:13px;color:#d9d3c4;">Termina ${deadline} (hora de Lisboa)</div>
+</td></tr></table>${button("Quero a oferta →")}
+<p style="margin:34px 0 12px;font-family:${SERIF};font-size:21px;line-height:1.35;color:${DARK};">${inner}</p>`;
+      }
       if (b.startsWith("Tem 30 dias de garantia")) return p(inner, `background:${LIGHT};border-radius:14px;padding:16px 18px;`);
       if (b.startsWith("👉")) return button("Quero começar hoje →");
       if (b.startsWith("Um abraço")) {
@@ -223,6 +244,19 @@ ${body}
   return { subject, text, html };
 }
 
+// ---- Bónus do email: Controlo Total grátis para quem compra até 48 h depois ----
+
+export function emailBonusApplies(email, createdSec, env = process.env) {
+  const e = norm(email);
+  if (!e || !createdSec) return false;
+  const file = join(dataDir(env), "emails-enviados.jsonl");
+  return readJsonl(file).some((r) => {
+    if (r.estado !== "enviado" || norm(r.email) !== e) return false;
+    const sent = Date.parse(r.data) / 1000;
+    return createdSec >= sent && createdSec <= sent + OFFER_HOURS * 3600;
+  });
+}
+
 // ---- Envio ----
 
 async function hasPaidPurchase(email, env) {
@@ -237,7 +271,7 @@ async function hasPaidPurchase(email, env) {
 }
 
 async function sendWithResend(email, env) {
-  const { subject, text, html } = recoveryEmail(email, env);
+  const { subject, text, html } = recoveryEmail(email, env, Date.now());
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
