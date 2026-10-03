@@ -195,15 +195,15 @@ export const whatsIncluded = [
 
 // Pop-ups de prova — factos de estudos publicados (as compras reais vêm da Stripe)
 export const proofFacts = [
-  { title: "82,5% ganharam controlo", text: "da ejaculação em 12 semanas de treino pélvico", source: "Pastore et al., 2014" },
-  { title: "40% recuperaram a ereção", text: "normal só com exercícios do pavimento pélvico", source: "Dorey et al., 2004" },
-  { title: "−15% de testosterona", text: "numa semana a dormir 5 horas por noite", source: "JAMA, 2011" },
+  { title: "82,5% ganharam controlo", text: "da ejaculação em 12 semanas de treino pélvico", source: "Estudo clínico · Pastore et al." },
+  { title: "40% recuperaram a ereção", text: "normal só com exercícios do pavimento pélvico", source: "Ensaio clínico · Dorey et al." },
+  { title: "−15% de testosterona", text: "numa semana a dormir 5 horas por noite", source: "Estudo publicado no JAMA" },
   { title: "Garantia de 30 dias", text: "se não sentir diferença, devolvemos o seu dinheiro", source: "Protocolo Nórdico" },
 ];
 
 // Factos para a página de tráfego pago (sem temas sexuais)
 export const proofFactsVitalidade = [
-  { title: "−15% de testosterona", text: "numa semana a dormir 5 horas por noite", source: "JAMA, 2011" },
+  { title: "−15% de testosterona", text: "numa semana a dormir 5 horas por noite", source: "Estudo publicado no JAMA" },
   { title: "Garantia de 30 dias", text: "se não sentir diferença, devolvemos o seu dinheiro", source: "Protocolo Nórdico" },
 ];
 

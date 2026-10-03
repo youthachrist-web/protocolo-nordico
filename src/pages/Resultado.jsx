@@ -4,12 +4,11 @@ import {
   RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer
 } from "recharts";
 import { ArrowRight, Check, ShieldCheck, Zap, Moon, Flame, Dumbbell, Leaf, Target } from "lucide-react";
-import { Image } from "@/components/ui/image";
 import Footer from "@/components/protocolo/Footer";
 import SocialProofPopup from "@/components/protocolo/SocialProofPopup";
 import CountdownBanner from "@/components/protocolo/CountdownBanner";
 import {
-  buildProfile, profileAreas, transformationImages,
+  buildProfile, profileAreas, scienceEvidence,
   PRODUCT_PRICE,
   PRODUCT_OLD_PRICE,
   STRIPE_CHECKOUT_URL,
@@ -193,16 +192,20 @@ export default function Resultado() {
         </div>
       </section>
 
-      {/* Prova social */}
+      {/* Ereção e controlo: o que mostram os estudos (+ relatos reais, quando houver) */}
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-5xl px-6">
           <div className="text-center">
-            <div className="pn-eyebrow mb-4">Quem já seguiu o protocolo</div>
+            <div className="pn-eyebrow mb-4">Ereção e ejaculação precoce</div>
             <h2 className="pn-serif text-3xl text-pn-ink md:text-4xl">
-              ⭐ Histórias reais de transformação
+              O que acontece quando se treina o corpo certo
             </h2>
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-pn-ink/60">
+              A firmeza e o controlo dependem dos mesmos músculos: o pavimento
+              pélvico. É por isso que o protocolo começa por aí.
+            </p>
           </div>
-          {/* Relatos reais sobre firmeza, controlo e confiança (quizData → sexualTestimonials) */}
+          {/* Relatos reais de clientes (quizData → sexualTestimonials), só com autorização */}
           {sexualTestimonials.length > 0 && (
             <div className="mt-10 grid gap-6 md:grid-cols-2">
               {sexualTestimonials.map((t) => (
@@ -213,16 +216,12 @@ export default function Resultado() {
               ))}
             </div>
           )}
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {transformationImages.slice(0, 3).map((t) => (
-              <div key={t.url} className="overflow-hidden rounded-2xl border border-pn-ink/10 bg-white shadow-sm">
-                <div className="aspect-square overflow-hidden">
-                  <Image src={t.url} alt={`Transformação — ${t.name}`} className="h-full w-full object-cover" fittingType="fill" />
-                </div>
-                <div className="p-5">
-                  <p className="pn-serif text-base leading-relaxed text-pn-ink">“{t.quote}”</p>
-                  <p className="mt-3 text-xs text-pn-ink/50">{t.name}, {t.age} · {t.city}</p>
-                </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {scienceEvidence.slice(0, 3).map((e) => (
+              <div key={e.source} className="rounded-2xl border border-pn-ink/10 bg-white p-6 shadow-sm">
+                <p className="pn-serif text-lg leading-snug text-pn-ink">{e.finding}</p>
+                <p className="mt-3 text-sm leading-relaxed text-pn-ink/60">{e.detail}</p>
+                <p className="mt-4 text-xs italic text-pn-ink/40">{e.source}</p>
               </div>
             ))}
           </div>
