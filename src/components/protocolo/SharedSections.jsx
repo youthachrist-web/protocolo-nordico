@@ -78,6 +78,8 @@ export function FoodSection({ showBuy = false }) {
               <div className="overflow-hidden rounded-2xl shadow-lg">
                 <Image
                   src={lifestyleImages.meals}
+                  loading="lazy"
+                  decoding="async"
                   alt="Exemplos de refeições do protocolo"
                   className="h-full w-full object-cover"
                   fittingType="fill"
@@ -87,6 +89,8 @@ export function FoodSection({ showBuy = false }) {
                 <div className="overflow-hidden rounded-xl shadow-md">
                   <Image
                     src={fruitImages.berries}
+                  loading="lazy"
+                  decoding="async"
                     alt="Frutas vermelhas frescas — antioxidantes e energia natural"
                     className="h-full w-full object-cover"
                     fittingType="fill"
@@ -95,6 +99,8 @@ export function FoodSection({ showBuy = false }) {
                 <div className="overflow-hidden rounded-xl shadow-md">
                   <Image
                     src={fruitImages.citrus}
+                  loading="lazy"
+                  decoding="async"
                     alt="Frutas cítricas frescas — vitamina C e imunidade"
                     className="h-full w-full object-cover"
                     fittingType="fill"

@@ -1,51 +1,30 @@
+import React, { Suspense, lazy } from 'react';
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PageNotFound from './lib/PageNotFound';
-import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from './components/ScrollToTop';
 import MetaPixelTracker from './components/MetaPixelTracker';
 import CookieBanner from './components/CookieBanner';
-// Add page imports here
-import Home from '@/pages/Home';
-import Quiz from '@/pages/Quiz';
-import Resultado from '@/pages/Resultado';
-import Checkout from '@/pages/Checkout';
-import Obrigado from '@/pages/Obrigado';
+// A /vitalidade (destino dos anúncios) vem no pacote principal; as outras
+// páginas carregam só quando são abertas, para a página de anúncios abrir
+// mais depressa no telemóvel.
 import Vitalidade from '@/pages/Vitalidade';
-import Acesso from '@/pages/Acesso';
-import Privacidade from '@/pages/Privacidade';
-import Termos from '@/pages/Termos';
+const Home = lazy(() => import('@/pages/Home'));
+const Quiz = lazy(() => import('@/pages/Quiz'));
+const Resultado = lazy(() => import('@/pages/Resultado'));
+const Checkout = lazy(() => import('@/pages/Checkout'));
+const Obrigado = lazy(() => import('@/pages/Obrigado'));
+const Acesso = lazy(() => import('@/pages/Acesso'));
+const Privacidade = lazy(() => import('@/pages/Privacidade'));
+const Termos = lazy(() => import('@/pages/Termos'));
+const PageNotFound = lazy(() => import('./lib/PageNotFound'));
 
-const AuthenticatedApp = () => {
-  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
-
-  // Show loading spinner while checking app public settings or auth
-  if (isLoadingPublicSettings || isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
-  // Handle authentication errors
-  if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
-    }
-  }
-
-  // Render the main app
-  return (
+// O site não tem contas de utilizador: as rotas abrem logo, sem esperar pela
+// verificação de autenticação da Base44 (que atrasava a primeira imagem).
+const AppRoutes = () => (
+  <Suspense fallback={<div className="min-h-screen bg-pn-light" />}>
     <Routes>
-      {/* Add your page Route elements here */}
       <Route path="/" element={<Home />} />
       <Route path="/quiz" element={<Quiz />} />
       <Route path="/resultado" element={<Resultado />} />
@@ -57,24 +36,20 @@ const AuthenticatedApp = () => {
       <Route path="/termos" element={<Termos />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
-  );
-};
-
+  </Suspense>
+);
 
 function App() {
-
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <ScrollToTop />
-          <MetaPixelTracker />
-          <CookieBanner />
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClientInstance}>
+      <Router>
+        <ScrollToTop />
+        <MetaPixelTracker />
+        <CookieBanner />
+        <AppRoutes />
+      </Router>
+      <Toaster />
+    </QueryClientProvider>
   )
 }
 

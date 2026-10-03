@@ -109,18 +109,19 @@ export const transformationImages = [
 ];
 
 // Imagens lifestyle / aspiracionais
+// Imagens da página de anúncios servidas do próprio site (WebP otimizado, public/img)
 export const lifestyleImages = {
-  hero: "https://media.base44.com/images/public/user_6a8ef58c9d0ccce86ce9d613/ee1e1a2ce_IMG_4618.jpeg",
+  hero: "/img/hero.webp",
   beach: "https://media.base44.com/images/public/user_6a8ef58c9d0ccce86ce9d613/95e50b92a_IMG_4620.jpeg",
   balcony: "https://media.base44.com/images/public/user_6a8ef58c9d0ccce86ce9d613/83b21e4c6_IMG_4619.jpeg",
   gym: "https://media.base44.com/images/public/user_6a8ef58c9d0ccce86ce9d613/92d3eb08b_IMG_4625.jpeg",
-  meals: "https://media.base44.com/images/public/user_6a8ef58c9d0ccce86ce9d613/725aaf3d9_IMG_4604.jpeg"
+  meals: "/img/meals.webp"
 };
 
 // Imagens de frutas (geradas) — secção de alimentação
 export const fruitImages = {
-  berries: "https://media.base44.com/images/public/6a8ef63ffa9445f0d95ba3c3/e3c3ff20d_generated_image.png",
-  citrus: "https://media.base44.com/images/public/6a8ef63ffa9445f0d95ba3c3/ca9bbb3d7_generated_image.png"
+  berries: "/img/berries.webp",
+  citrus: "/img/citrus.webp"
 };
 
 // Link com o order bump do Controlo Total (€4,99) e MB WAY / Multibanco

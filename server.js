@@ -1,6 +1,7 @@
 // Servidor de produção (Railway): serve o site (dist/) e a rota /api/download.
 import http from "node:http";
-import { createReadStream, createWriteStream, existsSync, mkdirSync, renameSync, statSync } from "node:fs";
+import { createReadStream, createWriteStream, existsSync, mkdirSync, readFileSync, renameSync, statSync } from "node:fs";
+import { brotliCompressSync, gzipSync, constants as zlibConstants } from "node:zlib";
 import { timingSafeEqual } from "node:crypto";
 import { pipeline } from "node:stream/promises";
 import { extname, join, normalize } from "node:path";
@@ -19,12 +20,50 @@ const TYPES = {
   ".ico": "image/x-icon", ".woff2": "font/woff2", ".txt": "text/plain",
 };
 
-function sendFile(res, file) {
+// Compressão (brotli/gzip) dos ficheiros de texto, guardada em memória:
+// o código do site passa de ~870 KB para ~100 KB no telemóvel.
+const COMPRESSIBLE = new Set([".html", ".js", ".css", ".json", ".svg", ".txt"]);
+const compressed = new Map();
+
+function pickEncoding(req) {
+  const accept = String(req.headers["accept-encoding"] || "");
+  if (/\bbr\b/.test(accept)) return "br";
+  if (/\bgzip\b/.test(accept)) return "gzip";
+  return null;
+}
+
+function compressedBody(file, encoding) {
+  const key = `${encoding}:${file}`;
+  const mtime = statSync(file).mtimeMs;
+  const hit = compressed.get(key);
+  if (hit && hit.mtime === mtime) return hit.body;
+  const raw = readFileSync(file);
+  const body =
+    encoding === "br"
+      ? brotliCompressSync(raw, { params: { [zlibConstants.BROTLI_PARAM_QUALITY]: 9 } })
+      : gzipSync(raw, { level: 9 });
+  compressed.set(key, { mtime, body });
+  return body;
+}
+
+function sendFile(req, res, file) {
   const isAsset = file.startsWith(join(DIST, "assets"));
-  res.writeHead(200, {
-    "Content-Type": TYPES[extname(file)] || "application/octet-stream",
-    "Cache-Control": isAsset ? "public, max-age=31536000, immutable" : "no-cache",
-  });
+  const ext = extname(file);
+  const headers = {
+    "Content-Type": TYPES[ext] || "application/octet-stream",
+    "Cache-Control": isAsset
+      ? "public, max-age=31536000, immutable"
+      : file.startsWith(join(DIST, "img"))
+        ? "public, max-age=604800"
+        : "no-cache",
+  };
+  const encoding = COMPRESSIBLE.has(ext) ? pickEncoding(req) : null;
+  if (encoding) {
+    const body = compressedBody(file, encoding);
+    res.writeHead(200, { ...headers, "Content-Encoding": encoding, Vary: "Accept-Encoding", "Content-Length": body.length });
+    return res.end(body);
+  }
+  res.writeHead(200, headers);
   createReadStream(file).pipe(res);
 }
 
@@ -130,8 +169,8 @@ http.createServer(async (req, res) => {
     file = "";
   }
   if (file.startsWith(DIST) && existsSync(file) && statSync(file).isFile()) {
-    return sendFile(res, file);
+    return sendFile(req, res, file);
   }
   // SPA: qualquer outra rota devolve o index.html
-  sendFile(res, join(DIST, "index.html"));
+  sendFile(req, res, join(DIST, "index.html"));
 }).listen(PORT, () => console.log(`Servidor a correr na porta ${PORT}`));
