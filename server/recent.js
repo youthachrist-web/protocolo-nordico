@@ -1,7 +1,7 @@
 // Compras reais recentes, lidas da Stripe, para os pop-ups de prova social.
 // Anónimas: só produto, país e há quantos minutos (nada de nomes nem emails).
 
-import { PRODUCTS } from "./download.js";
+import { productsInSession } from "./download.js";
 
 const COUNTRIES = { PT: "Portugal", BR: "Brasil", IT: "Itália", ES: "Espanha", FR: "França", DE: "Alemanha", CH: "Suíça", LU: "Luxemburgo", BE: "Bélgica", GB: "Reino Unido", US: "EUA" };
 const WINDOW_HOURS = 72;
@@ -13,7 +13,7 @@ export async function recentPurchases(env = process.env) {
 
   const since = Math.floor(Date.now() / 1000) - WINDOW_HOURS * 3600;
   const res = await fetch(
-    `https://api.stripe.com/v1/checkout/sessions?limit=20&status=complete&created[gte]=${since}`,
+    `https://api.stripe.com/v1/checkout/sessions?limit=20&status=complete&created[gte]=${since}&expand[]=data.line_items`,
     { headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` } }
   );
   if (!res.ok) return cache.data;
@@ -22,7 +22,7 @@ export async function recentPurchases(env = process.env) {
   const out = data
     .filter((s) => s.payment_status === "paid" && s.currency === "eur")
     .map((s) => {
-      const produto = Object.keys(PRODUCTS).find((k) => PRODUCTS[k].amounts.includes(s.amount_subtotal));
+      const produto = productsInSession(s)[0];
       if (!produto) return null;
       const cc = s.customer_details?.address?.country;
       return {
