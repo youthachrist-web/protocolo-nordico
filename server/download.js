@@ -17,17 +17,22 @@ import { Readable } from "node:stream";
 export const PRODUCTS = {
   // Aceita o preço atual e o anterior (compras feitas antes da mudança de preço)
   protocolo: { productId: "prod_VL9OoIQKgcymf0", amounts: [998, 1649], envVar: "PDF_URL_PROTOCOLO", filename: "Protocolo-Nordico.pdf" },
-  ebook: { productId: "prod_VL9OH1nRlGOd6V", amounts: [659, 997], envVar: "PDF_URL_EBOOK", filename: "Controlo-Total.pdf" },
+  ebook: { productId: "prod_VL9OH1nRlGOd6V", amounts: [499, 659, 997], envVar: "PDF_URL_EBOOK", filename: "Controlo-Total.pdf" },
 };
 
 // Produtos comprados numa sessão: pelos itens (inclui o order bump do checkout,
-// em que o mesmo pagamento traz os dois produtos) e, para compras antigas sem
-// itens expandidos, pelo valor total.
+// em que o mesmo pagamento traz os dois produtos), identificados pelo produto
+// da Stripe ou pelo preço unitário (se o link usar uma cópia do produto) e, para
+// compras antigas sem itens expandidos, pelo valor total. 499 = order bump.
 export function productsInSession(session) {
   if (session.currency !== "eur") return [];
   const items = session.line_items?.data || [];
   const found = Object.keys(PRODUCTS).filter((k) =>
-    items.some((li) => (li.price?.product?.id || li.price?.product) === PRODUCTS[k].productId)
+    items.some(
+      (li) =>
+        (li.price?.product?.id || li.price?.product) === PRODUCTS[k].productId ||
+        PRODUCTS[k].amounts.includes(li.price?.unit_amount)
+    )
   );
   if (found.length) return found;
   return Object.keys(PRODUCTS).filter((k) => PRODUCTS[k].amounts.includes(session.amount_subtotal));
