@@ -10,6 +10,7 @@ import { handleDownload, PRODUCTS } from "./server/download.js";
 import { recentPurchases } from "./server/recent.js";
 import { leadsCsv, saveLead } from "./server/leads.js";
 import { recoverAccess } from "./server/acesso.js";
+import { emailStatus, startRecoveryEmails, unsubscribe } from "./server/emails.js";
 
 const DIST = join(process.cwd(), "dist");
 const PORT = process.env.PORT || 3000;
@@ -142,6 +143,21 @@ http.createServer(async (req, res) => {
     }
   }
 
+  if (url.pathname === "/api/sair") {
+    const out = unsubscribe(url);
+    res.writeHead(out.status, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" });
+    return res.end(out.html);
+  }
+
+  if (url.pathname === "/api/admin/emails") {
+    if (req.method !== "GET" || !isAdmin(req, url)) {
+      res.writeHead(403, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ error: "Proibido." }));
+    }
+    res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+    return res.end(JSON.stringify(emailStatus()));
+  }
+
   if (url.pathname === "/api/admin/leads") {
     if (req.method !== "GET" || !isAdmin(req, url)) {
       res.writeHead(403, { "Content-Type": "application/json" });
@@ -189,4 +205,7 @@ http.createServer(async (req, res) => {
   }
   // SPA: qualquer outra rota devolve o index.html
   sendFile(req, res, join(DIST, "index.html"));
-}).listen(PORT, () => console.log(`Servidor a correr na porta ${PORT}`));
+}).listen(PORT, () => {
+  console.log(`Servidor a correr na porta ${PORT}`);
+  startRecoveryEmails();
+});
