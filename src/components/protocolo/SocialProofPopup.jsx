@@ -14,7 +14,7 @@ function formatAgo(min) {
 // ideia de pouca venda. Sem compras recentes, aparecem só os factos.
 const MAX_MINUTES = 6 * 60;
 
-export default function SocialProofPopup({ facts = proofFacts }) {
+export default function SocialProofPopup({ facts = proofFacts, raised = false }) {
   const [items, setItems] = useState(() => facts.map((f) => ({ type: "fact", ...f })));
   const [index, setIndex] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -64,7 +64,7 @@ export default function SocialProofPopup({ facts = proofFacts }) {
 
   return (
     <div
-      className={`fixed bottom-4 left-4 z-50 transition-all duration-500 ${
+      className={`fixed ${raised ? "bottom-24 md:bottom-4" : "bottom-4"} left-4 z-50 transition-all duration-500 ${
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-20 opacity-0"
       }`}
     >

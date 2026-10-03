@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Moon, Dumbbell, Sun, Utensils, Zap, Leaf } from "lucide-react";
 import { Image } from "@/components/ui/image";
 import { lifestyleImages, fruitImages } from "@/lib/quizData";
+import BuyButton from "@/components/protocolo/BuyButton";
 
 // Secções partilhadas entre a página inicial e a /vitalidade.
 
@@ -15,7 +16,7 @@ const pillars = [
   { icon: Leaf, title: "🌿 Lifestyle", desc: "Pequenos ajustes que se mantêm a longo prazo." }
 ];
 
-export function PillarsSection() {
+export function PillarsSection({ showBuy = false }) {
   return (
     <>
       {/* Pilares */}
@@ -41,6 +42,7 @@ export function PillarsSection() {
               </div>
             ))}
           </div>
+          {showBuy && <BuyButton tone="dark" className="mt-12" />}
         </div>
       </section>
 
@@ -48,7 +50,7 @@ export function PillarsSection() {
   );
 }
 
-export function FoodSection() {
+export function FoodSection({ showBuy = false }) {
   return (
     <>
       {/* Alimentação */}
@@ -70,6 +72,7 @@ export function FoodSection() {
                 <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-pn-gold" /> Substituições flexíveis</li>
                 <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-pn-gold" /> Sem contagem obsessiva de calorias</li>
               </ul>
+              {showBuy && <BuyButton tone="light" className="mt-8 md:items-start" />}
             </div>
             <div className="order-1 md:order-2">
               <div className="overflow-hidden rounded-2xl shadow-lg">
@@ -107,7 +110,7 @@ export function FoodSection() {
   );
 }
 
-export function ClosingSection() {
+export function ClosingSection({ showBuy = false }) {
   return (
     <>
       {/* Lifestyle */}
@@ -126,12 +129,21 @@ export function ClosingSection() {
             Disciplina simples, hábitos sustentáveis e clareza sobre o que
             realmente faz diferença. O resto é ruído.
           </p>
+          {showBuy ? (
+            <>
+              <BuyButton tone="dark" className="mt-8" />
+              <Link to="/quiz" className="mt-4 inline-block text-xs text-pn-light/50 underline-offset-4 hover:text-pn-gold hover:underline">
+                ou começar pelo diagnóstico gratuito
+              </Link>
+            </>
+          ) : (
           <Link
             to="/quiz"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-pn-gold px-8 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
           >
             Começar o meu diagnóstico <ArrowRight className="h-4 w-4" />
           </Link>
+          )}
         </div>
       </section>
 

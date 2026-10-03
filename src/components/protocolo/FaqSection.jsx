@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { faqs } from "@/lib/quizData";
+import BuyButton from "@/components/protocolo/BuyButton";
 
-export default function FaqSection() {
+export default function FaqSection({ showBuy = false }) {
   return (
     <section className="bg-pn-light py-16 md:py-24">
       <div className="mx-auto max-w-3xl px-6">
@@ -23,12 +24,14 @@ export default function FaqSection() {
           ))}
         </Accordion>
         <div className="mt-10 text-center">
+          {showBuy ? <BuyButton tone="light" /> : (
           <a
             href="#oferta"
             className="inline-flex items-center gap-2 rounded-full bg-pn-gold px-7 py-4 text-sm font-semibold text-pn-dark transition-transform hover:scale-[1.02] active:scale-95"
           >
             Ver a oferta <ArrowRight className="h-4 w-4" />
           </a>
+          )}
           <div className="mt-3">
             <Link to="/quiz" className="text-xs text-pn-ink/50 underline-offset-4 hover:underline">
               ou fazer primeiro o teste gratuito
