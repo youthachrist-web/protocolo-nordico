@@ -14,6 +14,7 @@ import Resultado from '@/pages/Resultado';
 import Checkout from '@/pages/Checkout';
 import Obrigado from '@/pages/Obrigado';
 import Vitalidade from '@/pages/Vitalidade';
+import Acesso from '@/pages/Acesso';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -48,6 +49,7 @@ const AuthenticatedApp = () => {
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/obrigado" element={<Obrigado />} />
       <Route path="/vitalidade" element={<Vitalidade />} />
+      <Route path="/acesso" element={<Acesso />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
